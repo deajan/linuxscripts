@@ -3,7 +3,7 @@
 PROGRAM="ssh_jail.sh" # Basic ssh shell jail creation script
 AUTHOR="(L) 2014 by Orsiris \"Ozy\" de Jong"
 CONTACT="http://www.netpower.fr - ozy@netpower.fr"
-PROGRAM_BUILD=2008201401
+PROGRAM_BUILD=2108201403
 
 ## Creates a SSH chroot jail where a given user can login and execute a minimal set of programs
 ## Binaries specified by BINARIES_TO_COPY will be available
@@ -13,31 +13,50 @@ PROGRAM_BUILD=2008201401
 
 
 # List of binary files to copy to chrooted environment. All dependencies will also be copied.
-BINARIES_TO_COPY="/usr/bin/chmod;/usr/bin/chown;/usr/bin/ls;/usr/bin/cat;/usr/bin/ln;/usr/bin/cp" # Works on CentOS 7
+BINARIES_TO_COPY="/usr/bin/chmod;/usr/bin/chown;/usr/bin/ls;/usr/bin/cat;/usr/bin/ln;/usr/bin/cp;/usr/sbin/ldconfig" # Works on CentOS 7
 #BINARIES_TO_COPY="/bin/chmod;/bin/chown;/bin/ls;/bin/cat;/bin/ln;/bin/cp;/bin/mv;/bin/rm;/usr/bin/curl" # Works on Debian 6
 
 # Directories to copy to chrooted environment
-EXT_DIRS="/usr/bin;/lib64;/usr/share/php;/usr/share/terminfo;/usr/include" # Works on CentOS 7 (replace lib by lib64 if needed)
+# /etc/php.d is needed to support php modules
+# /usr/share/terminfo or /lib/terminfo is needed to support interactive programs like nano or php
+# /usr/share/snmp is needed for php-snmp module
+# /usr/share/zoneinfo is needed for php-composer
+EXT_DIRS="/usr/bin;/usr/lib64;/usr/share/php;/usr/share/terminfo;/usr/include;/etc/php.d;/usr/share/snmp;/usr/share/zoneinfo;/etc/ld.so.conf.d" # Works on CentOS 7 (replace lib by lib64 if needed)
 #EXT_DIRS="/bin;/lib;/lib/terminfo" # Works on Debian 6 (replace lib by lib64 if needed)
 #EXT_DIRS="/lib/terminfo"
 
 # Empty directories to create in chrooted environment types (lib and lib64 directories are already included)
-DIRS_TO_CREATE="/dev;/etc;/var;/tmp"
+DIRS_TO_CREATE="/dev;/etc;/var/tmp;/tmp"
 
 # Additional files to copy to chrooted environment
-FILES_TO_COPY="/etc/localtime;/etc/nsswitch.conf;/etc/passwd;/etc/group;/etc/resolv.conf"
+# /etc/resolv.conf is needed to enable internet access
+# /etc/pki/tls/certs/ca-bundle.crt and /etc/pki/tls/certs/ca-bundle.trust.crt are needed to enable SSL certificate verification
+FILES_TO_COPY="/etc/localtime;/etc/passwd;/etc/group;/etc/resolv.conf;/etc/pki/tls/certs/ca-bundle.crt;/etc/pki/tls/certs/ca-bundle.trust.crt;/etc/ld.so.conf"
 
 # Default group for chrooted users
 #GROUP=chroot
 GROUP=apache
 
 # Shell to use in chrooted environment
-SHELL=/bin/bash
+SHELL=/usr/bin/bash
+
+# ADD chroot entry to ssh server
+ADD_SSH_CHROOT_ENTRY=yes
+
+# Use alternative chroot method without SSH (login chroot script)
+USE_CHROOT_SCRIPT=no
 
 ## END OF STANDARD CONFIGURATION OPTIONS ###########################################################
 
-CHROOT_SCRIPT=/bin/chrootusers
+CHROOT_SCRIPT_PATH=/bin/chrootusers
 USER_HOME=/home
+
+# Basic directories present on most linux flavors
+BASIC_DIRS="/usr/bin;/usr/lib;/usr/lib64"
+# Create symlinks for BASIC_DIRS to root (used on most linux flavors)
+CREATE_SYMLINKS="yes"
+
+SSHD_CONFIG="/etc/ssh/sshd_config"
 
 # Prevent cp -i alias that stays interactive
 alias cp=cp
@@ -80,7 +99,7 @@ function CheckEnvironment
 
 	x86_64)
 	ARCH=x64
-	LIB=/lib64;/lib
+	LIB="/lib64;/lib"
 	;;
 	i686)
 	ARCH=x86
@@ -120,11 +139,27 @@ function CheckEnvironment
 		CHROOT_BINARY=$(type -p chroot)
 		CHROOT_BINARY_ALT="$CHROOT_BINARY""_alt"
 	fi
+
 	if ! type -p ldd > /dev/null 2>&1
 	then
 		echo "Cannot find ldd executable."
 		exit 1
 	fi
+
+	if ! type -p ldconfig > /dev/null 2>&1
+	then
+		echo "Cannot find ldconfig executable."
+		exit 1
+	fi
+
+	if ! type -p ln > /dev/null 2>&1
+	then
+		echo "Cannot find ln executable."
+		exit 1
+	else
+		LN_BINARY=$(type -p ln)
+	fi
+
 }
 
 function AddUserAndGroup
@@ -137,7 +172,13 @@ function AddUserAndGroup
 	id -nu "$LOGIN" > /dev/null 2>&1
 	if [ $? != 0 ] || [ "$force" == "1" ]
 	then
-		useradd -c "User chrooted" -d "$CHROOT_DIR/" -g "$GROUP" -s "$CHROOT_SCRIPT" "$LOGIN"
+		if [ "$USE_CHROOT_SCRIPT" == "yes" ]
+		then
+			chroot="-s $CHROOT_SCRIPT_PATH"
+		else
+			chroot=""
+		fi
+		useradd -c "User chrooted" -d "$CHROOT_DIR/" -g "$GROUP" $chroot "$LOGIN"
 		CheckErr "Adding user $LOGIN"
 	else
 		echo "User $LOGIN already exists."
@@ -171,6 +212,7 @@ function CreatePaths
 {
 	OLD_IFS=$IFS
 	IFS=";"
+	LogDebug "$DIRS_TO_CREATE"
 	for dir in $DIRS_TO_CREATE
 	do
 		if ! [ -d "$CHROOT_DIR$dir" ]
@@ -274,12 +316,31 @@ function AllowChrootBinary
 	fi
 }
 
+function AddSSHChrootEntry
+{
+	if [ -f $SSHD_CONFIG ]
+	then
+		LogDebug "Adding chroot entry to $SSHD_CONFIG"
+		echo "" >> $SSHD_CONFIG
+		echo "Match User $LOGIN" >> $SSHD_CONFIG
+		echo "	ChrootDirectory $CHROOT_DIR" >> $SSHD_CONFIG
+		echo "	AllowTCPForwarding no" >> $SSHD_CONFIG
+		echo "	X11Forwarding no" >> $SSHD_CONFIG
+		CheckErr "Adding chroot entry to $SSHD_CONFIG"
+
+		echo "Don't forget to reload sshd."
+	else
+		echo "Cannot find $SSHD_CONFIG path"
+		exit 1
+	fi
+}
+
 function CreateChrootScript
 {
-	if ! [ -f "$CHROOT_SCRIPT" ] || [ "$force_script" == "1" ]
+	if ! [ -f "$CHROOT_SCRIPT_PATH" ] || [ "$force_script" == "1" ]
 	then
-		echo "Creating $CHROOT_SCRIPT"
-		cat > "$CHROOT_SCRIPT" << EXTSCRIPT
+		echo "Creating $CHROOT_SCRIPT_PATH"
+		cat > "$CHROOT_SCRIPT_PATH" << EXTSCRIPT
 #!/bin/bash
 if [ -d "$USER_HOME/\$USER" ]
 then
@@ -289,36 +350,95 @@ else
 	exit 1
 fi
 EXTSCRIPT
-		CheckErr "Create script $CHROOT_SCRIPT"
-		chmod 555 "$CHROOT_SCRIPT"
-		CheckErr "chmod 555 $CHROOT_SCRIPT"
+		CheckErr "Create script $CHROOT_SCRIPT_PATH"
+		chmod 555 "$CHROOT_SCRIPT_PATH"
+		CheckErr "chmod 555 $CHROOT_SCRIPT_PATH"
 	else
-		echo "$CHROOT_SCRIPT already exists. Use -f to override."
+		echo "$CHROOT_SCRIPT_PATH already exists. Use -f to override."
 	fi
+}
+
+function AddSymlinks
+{
+	# Add symlinks from BASIC_DIRS to root dir
+	OLD_IFS=$IFS
+	IFS=";"
+
+	for link in $BASIC_DIRS
+	do
+		LogDebug "Creating symlink $link -> /$(basename $link)"
+		$LN_BINARY -s "$link" "$CHROOT_DIR/$(basename $link)"
+		CheckErr "Creating $link symlink"
+	done
+	IFS=$OLD_IFS
 }
 
 function AddSpecialFiles
 {
-	# Add /dev/null special file
 	if ! [ -c "$CHROOT_DIR/dev/null" ]
 	then
 		mknod "$CHROOT_DIR/dev/null" c 1 3 -m 666
 		CheckErr "Creating /dev/null in jail"
 	fi
 
-	# Add /dev/urandom for ssl support (yeah, how to find this dependency uh ?)
+	if ! [ -c "$CHROOT_DIR/dev/console" ]
+	then
+		mknod "$CHROOT_DIR/dev/console" c 5 1 -m 622
+		CheckErr "Creating /dev/console in jail"
+	fi
+
+	if ! [ -c "$CHROOT_DIR/dev/zero" ]
+	then
+		mknod "$CHROOT_DIR/dev/zero" c 1 5 -m 666
+		CheckErr "Creating /dev/zero in jail"
+	fi
+
+	if ! [ -c "$CHROOT_DIR/dev/ptmx" ]
+	then
+		mknod "$CHROOT_DIR/dev/ptmx" c 5 2 -m 666
+		CheckErr "Creating /dev/ptmx in jail"
+	fi
+
+	if ! [ -c "$CHROOT_DIR/dev/tty" ]
+	then
+		mknod "$CHROOT_DIR/dev/tty" c 5 1 -m 666
+		CheckErr "Creating /dev/tty in jail"
+	fi
+
+	if ! [ -c "$CHROOT_DIR/dev/random" ]
+	then
+		mknod "$CHROOT_DIR/dev/random" c 1 8 -m 444
+		CheckErr "Creating /dev/random in jail"
+	fi
+
 	if ! [ -c "$CHROOT_DIR/dev/urandom" ]
 	then
-		mknod "$CHROOT_DIR/dev/urandom" c 1 9 -m 644
+		mknod "$CHROOT_DIR/dev/urandom" c 1 9 -m 444
 		CheckErr "Creating /dev/urandom in jail"
 	fi
+
+	chown  root:tty $CHOOT_DIR/dev/{console,ptmx,tty}
+	CheckErr "Taking ownership of /dev/console /dev/ptmx and /dev/tty"
+}
+
+function Runldconfig
+{
+	LogDebug "Running ldconfig in chrooted environment"
+	chroot $CHROOT_DIR /usr/sbin/ldconfig
+	CheckErr "ldconfig failed"
 }
 
 function SetPermissions
 {
 	LogDebug "Changing owner of $CHROOT_DIR to $LOGIN:$GROUP"
-	chown -R "$LOGIN:$GROUP" "$CHROOT_DIR"
-	CheckErr "chown -R $LOGIN:$GROUP $CHROOT_DIR"
+	chown -R "$LOGIN:$GROUP" "$CHROOT_DIR/"
+	CheckErr "chown -R $LOGIN:$GROUP $CHROOT_DIR/"
+
+	chown "root:root" "$CHROOT_DIR"
+	CheckErr "chown root:root $CHROOT_DIR"
+
+	chmod 755 "$CHROOT_DIR"
+	CheckErr "chmod 755 $CHROOT_DIR"
 }
 
 if [ "$1" == "" ]
@@ -329,9 +449,6 @@ else
 fi
 
 CheckEnvironment
-
-# Add arch dependend lib path to directory list
-DIRS_TO_CREATE="$DIRS_TO_CREATE;$LIB"
 
 force=0
 force_script=0
@@ -353,6 +470,8 @@ do
 done
 CHROOT_DIR="$USER_HOME/$LOGIN"
 
+# Add arch dependend lib path to directory list
+DIRS_TO_CREATE="$DIRS_TO_CREATE;$CHROOT_DIR"
 
 if ! [ "$ADD_PROGRAM" == "" ]
 	then
@@ -365,12 +484,24 @@ else
 	# Normal program run
 	AddUserAndGroup
 	CreatePaths
-	AddBinaries "$SHELL;$ENV_BINARY;$BINARIES_TO_COPY"
 	CopyDirs
 	CopyFiles
-	AllowChrootBinary
-	CreateChrootScript
+	if [ "$CREATE_SYMLINKS" == "yes" ]
+	then
+		AddSymlinks
+	fi
+	AddBinaries "$SHELL;$ENV_BINARY;$BINARIES_TO_COPY"
+	if [ "$ADD_SSH_CHROOT_ENTRY" == "yes" ]
+	then
+		AddSSHChrootEntry
+	fi
+	if [ "$USE_CHROOT_SCRIPT" == "yes" ]
+	then
+		AllowChrootBinary
+		CreateChrootScript
+	fi
 	AddSpecialFiles
+	Runldconfig
 	SetPermissions
 fi
 

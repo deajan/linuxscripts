@@ -2,6 +2,7 @@
 Collection of useful scripts
 
 ## emailCheck.sh
+Low tech tool to cleanup mailing lists from unwanted emails.
 Performs various checks on a list of email adresses:
 1. Checks address' compliance against RC822, if not, deletes email
 2. Checks address' domain for known typos and corrects them

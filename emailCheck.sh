@@ -107,8 +107,8 @@ function checkEnvironment {
 		exit 1
 	fi
 
-	if [[ $(uname) == *"CYGWIN*" ]]; then
-		ping $inet_addr_to_test 44 " > /dev/null
+	if [[ $(uname) == *"CYGWIN"* ]]; then
+		ping $inet_addr_to_test 64 3 > /dev/null
 	else
 		ping -c 3 $inet_addr_to_test > /dev/null
 	fi

@@ -4,7 +4,7 @@ PROGRAM="emailCheck.sh"
 AUTHOR="(L) 2014-2016 by Orsiris de Jong"
 CONTACT="http://www.netpower.fr/ - ozy@netpower.fr"
 PROGRAM_VERSION=0.5
-PROGRAM_BUILD=2016033001
+PROGRAM_BUILD=2016040801
 
 ## Email correction script
 ## Checks if email format is valid againts RFC822
@@ -107,7 +107,12 @@ function checkEnvironment {
 		exit 1
 	fi
 
-	if ! ping -c 3 $inet_addr_to_test > /dev/null; then
+	if [[ $(uname) == *"CYGWIN*" ]]; then
+		ping $inet_addr_to_test 44 " > /dev/null
+	else
+		ping -c 3 $inet_addr_to_test > /dev/null
+	fi
+	if [ $? != 0 ]; then
 		echo "This script needs internet to resolve MX records."
 		exit 1
 	fi

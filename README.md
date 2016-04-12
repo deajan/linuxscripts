@@ -4,10 +4,11 @@ Collection of useful scripts
 ## emailCheck.sh
 Low tech tool to cleanup mailing lists from unwanted emails.
 Performs various checks on a list of email adresses:
-1. Checks address' compliance against RC822, if not, deletes email
-2. Checks address' domain for known typos and corrects them
-3. Checks if email domain has MX records, if not, deletes email
-4. Checks if email contains words like example or test, rendering them ambiguous, and puts them into a separate file
+1. Converts all addresses to lowercase
+2. Checks address' compliance against RC822
+3. Checks address' domain for known typos and corrects them
+4. Checks if email domain has MX records
+5. Checks if email user or domain is test / example, rendering them ambiguous
 
 Usage:
 emailCheck.sh /path/to/email_list

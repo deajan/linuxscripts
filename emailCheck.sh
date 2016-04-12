@@ -3,31 +3,62 @@
 PROGRAM="emailCheck.sh"
 AUTHOR="(L) 2014-2016 by Orsiris de Jong"
 CONTACT="http://www.netpower.fr/ - ozy@netpower.fr"
-PROGRAM_VERSION=0.6
-PROGRAM_BUILD=2016041201
+PROGRAM_VERSION=0.6.1
+PROGRAM_BUILD=2016041203
 
 ## Email correction script
+## Lowers all characters of email
 ## Checks if email format is valid againts RFC822
 ## Checks if there are any known domain typos
 ## Checks if email domain has valid MX records
+## Checks if email address is ambiguous
 
 ## Warning: when processing files command windows, use dos2unix first to convert carriage return chars
 
-# Check if internet is working
+
+###################################################################################################### Input file format options
+
+## Example: File with only one mail address per line
+#CSV_EMAIL_IS_FIRST_COLUMN=true
+#CSV_DELIMITER=$IFS
+#CSV_READ='email'
+#CSV_WRITE='email'
+
+## Example: CSV file with three columns where email is in second column
+#CSV_EMAIL_IS_FIRST_COLUMN=false
+#CSV_DELIMITER=';'
+#CSV_READ='col1 email col3'
+#CSV_WRITE='$col1$CSV_DELIMITER$email$CSV_DELIMITER$col3'
+
+CSV_EMAIL_IS_FIRST_COLUMN=true
+CSV_DELIMITER=$IFS
+CSV_READ='email'
+CSV_WRITE='$email'
+
+###################################################################################################### Input file format options
+
+# Check if internet is working by sending a ping to the following address
 inet_addr_to_test=www.google.com
 
-INCORRECT_MAILS=0
-INCORRECT_DOMAINS=0
-INCORRECT_MX=0
-AMBIGUOUS_MAILS=0
-VALID_MAILS=0
-
+# Filename prefixes
 TMP_PREFIX="tmp"
 VALID_PREFIX="valid"
 NON_RFC_COMPLIANT_PREFIX="rfc_non_compliant"
 MISSING_MX_PREFIX="missing_mx"
 AMBIGUOUS_PREFIX="ambiguous"
 
+
+
+
+
+## NO NEED TO EDIT UNDER THIS LINE
+
+# Initial counter values
+INCORRECT_MAILS=0
+INCORRECT_DOMAINS=0
+INCORRECT_MX=0
+AMBIGUOUS_MAILS=0
+VALID_MAILS=0
 
 # Lowers all characters
 function lowercase {
@@ -154,14 +185,7 @@ function loop {
 	echo "Checking emails."
 
 	count=0
-	#TIP while read email; do waits for a single email address per line
-	#TIP while IFS=';' read col1 col2 email; do will read third column separated by semicolons as email
-	#TIP keep in mind that sortAmbiguous cannot handle CSV files if email address is not the first column 
-
-	# Example to read CSV where email is second column
-	#while IFS=';' read land email; do
-	# Example to read a file with one email per line
-	while read email; do
+	while IFS=$CSV_DELIMITER read $CSV_READ; do
 
 		email=$(lowercase "$email")
 		checkRFC822 "$email"
@@ -187,9 +211,10 @@ function loop {
 		fi
 
 		# CSV file example output as 2nd column
-		#echo "$land;$email" >> "$output_tmp"
+		#echo "$col1;$email;col3" >> "$output_tmp"
 		# One email per line example
-		echo "$email" >> "$output_tmp"
+		#echo "$email" >> "$output_tmp"
+		eval "echo $CSV_WRITE >> \"$output_tmp\""
 		count=$((count+1))
 		if [ $((count % 1000)) -eq 0 ]; then
 			echo "Time: $SECONDS - $count email addresses processed so far."
@@ -203,8 +228,24 @@ function sortAmbiguous {
 	local output_valid="${3}"
 
 	# Test for username and domain
-	egrep "^test@|^example@|^exemple@|^spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
-	egrep -v "^test$|^example$|^exemple$|^spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
+	if [ $CSV_EMAIL_IS_FIRST_COLUMN == false ]; then
+		BEGIN=$CSV_DELIMITER
+	else
+		BEGIN='^'
+	fi
+
+	cmd="$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|@test\.|@example\.|@exemple\.|@spam\."
+	eval 'egrep $cmd < "$input" > "$output_ambiguous"'
+	eval 'egrep -v $cmd < "$input" > "$output_valid"'
+	#egrep "$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
+	#egrep -v "$BEGIN""test$|""$BEGIN""example$|""$BEGIN""exemple$|""$BEGIN""spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
+
+	#	egrep "$CSV_DELIMITER""test@|""$CSV_DELIMITER""example@|""$CSV_DELIMITER""exemple@|""$CSV_DELIMITER""spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
+	#	egrep -v "^test$|^example$|^exemple$|^spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
+	#else
+	#	egrep "^test@|^example@|^exemple@|^spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
+	#	egrep -v "^test$|^example$|^exemple$|^spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
+	#fi
 
 	AMBIGUOUS_MAILS=$(wc -l < "$output_ambiguous")
 	VALID_MAILS=$(wc -l < "$output_valid")
@@ -243,7 +284,7 @@ fi
 
 loop "$input" "$output_non_rfc_compliant" "$output_missing_mx" "$output_tmp"
 if [ ! -f "$output_tmp" ]; then
-	echo "No valid emails found. Check if your file has only email addresses, or correct the loop function accordingly to read multicolumn CSV files See #TIP in source."
+	echo "No valid emails found. Check if your file has only email addresses, or configure the read process accordingly to read a multicolumn CSV file in source header."
 	echo "Also, if your file comes from Windows, convert it using dos2unix first."
 else
 	sortAmbiguous "$output_tmp" "$output_ambiguous" "$output_valid"

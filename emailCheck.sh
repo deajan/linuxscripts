@@ -3,8 +3,8 @@
 PROGRAM="emailCheck.sh"
 AUTHOR="(L) 2014-2016 by Orsiris de Jong"
 CONTACT="http://www.netpower.fr/ - ozy@netpower.fr"
-PROGRAM_VERSION=0.6.1
-PROGRAM_BUILD=2016041203
+PROGRAM_VERSION=0.6.2
+PROGRAM_BUILD=2016041401
 
 ## Email correction script
 ## Lowers all characters of email
@@ -210,11 +210,7 @@ function loop {
 			continue
 		fi
 
-		# CSV file example output as 2nd column
-		#echo "$col1;$email;col3" >> "$output_tmp"
-		# One email per line example
-		#echo "$email" >> "$output_tmp"
-		eval "echo $CSV_WRITE >> \"$output_tmp\""
+		eval "echo \"$CSV_WRITE\" >> \"$output_tmp\""
 		count=$((count+1))
 		if [ $((count % 1000)) -eq 0 ]; then
 			echo "Time: $SECONDS - $count email addresses processed so far."
@@ -237,15 +233,6 @@ function sortAmbiguous {
 	cmd="$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|@test\.|@example\.|@exemple\.|@spam\."
 	eval 'egrep $cmd < "$input" > "$output_ambiguous"'
 	eval 'egrep -v $cmd < "$input" > "$output_valid"'
-	#egrep "$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
-	#egrep -v "$BEGIN""test$|""$BEGIN""example$|""$BEGIN""exemple$|""$BEGIN""spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
-
-	#	egrep "$CSV_DELIMITER""test@|""$CSV_DELIMITER""example@|""$CSV_DELIMITER""exemple@|""$CSV_DELIMITER""spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
-	#	egrep -v "^test$|^example$|^exemple$|^spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
-	#else
-	#	egrep "^test@|^example@|^exemple@|^spam@|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_ambiguous"
-	#	egrep -v "^test$|^example$|^exemple$|^spam$|@test\.|@example\.|@exemple\.|@spam\." < "$input" > "$output_valid"
-	#fi
 
 	AMBIGUOUS_MAILS=$(wc -l < "$output_ambiguous")
 	VALID_MAILS=$(wc -l < "$output_valid")

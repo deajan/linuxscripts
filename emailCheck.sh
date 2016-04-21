@@ -3,8 +3,8 @@
 PROGRAM="emailCheck.sh"
 AUTHOR="(L) 2014-2016 by Orsiris de Jong"
 CONTACT="http://www.netpower.fr/ - ozy@netpower.fr"
-PROGRAM_VERSION=0.6.2
-PROGRAM_BUILD=2016041401
+PROGRAM_VERSION=0.6.3
+PROGRAM_BUILD=2016042101
 
 ## Email correction script
 ## Lowers all characters of email
@@ -20,18 +20,18 @@ PROGRAM_BUILD=2016041401
 
 ## Example: File with only one mail address per line
 #CSV_EMAIL_IS_FIRST_COLUMN=true
-#CSV_DELIMITER=$IFS
+#CSV_INPUT_DELIMITER=$IFS
 #CSV_READ='email'
 #CSV_WRITE='email'
 
-## Example: CSV file with three columns where email is in second column
+## Example: CSV file with three columns where email is in second column, where output CSV is comma instead of semicolon
 #CSV_EMAIL_IS_FIRST_COLUMN=false
-#CSV_DELIMITER=';'
+#CSV_INPUT_DELIMITER=';'
 #CSV_READ='col1 email col3'
-#CSV_WRITE='$col1$CSV_DELIMITER$email$CSV_DELIMITER$col3'
+#CSV_WRITE='$col1,$email,$col3'
 
 CSV_EMAIL_IS_FIRST_COLUMN=true
-CSV_DELIMITER=$IFS
+CSV_INPUT_DELIMITER=$IFS
 CSV_READ='email'
 CSV_WRITE='$email'
 
@@ -83,35 +83,51 @@ function checkRFC822 {
 function checkDomains {
 	local mail="${1}"
 
-	declare -a invalid_domains=(	neuf.com neuf.fre neuf.frr neuf
-					wanado.fr wanado.com wanadoo.fre anadoo.fr wanaoo.fr wanadoo ornge.fr orage.fr orage.com orange.com wanadoo.com wanadoo.frr orange.frr wanadoo orange
-					fre.fr fre.com free.com free.frr
-					clubinternet.fr clubinternet.com club-internet.com club-internet clubinternet
-					laposte.com laposte
-					yaho.fr yaho.com yaho.co.uk yahoo.frr
-					sfr.fre sfr.frr sfr
-					homail.fr hotail.fr homail.com hotail.com life.fr live.frr life.com
-					gmail.fr google.fr gmal.fr gmail.frr gmail
-					alice.fr aliseadsl.fr aliceadsl.com aliceadsl.frr aliceadsl
-					voila.com voila.frr voila
-					skynet.bee skynet
+	declare -a invalid_domains=(	.neuf.fr neuf.com neuf.fre neuf.frr neuf neuf.fe neuf.ff
+					.wanadoo.fr wanado.fr wanado.com wanadoo.fre anadoo.fr wanaoo.fr wanadoo wanadoo.com wanadoo.frr wanadoo wanadoo.fe wanadoo.ff
+					.orange.fr ornge.fr orage.fr orage.com orange.com orange.frr orange orange.fe orange.ff
+					.free.fr fre.fr fre.com free.com free.frr free.fe free.ff
+					.club-internet.fr clubinternet.fr clubinternet.com club-internet.com club-internet clubinternet club_internet.fr club-internet.fe club-internet.ff
+					.laposte.net laposte.com laposte
+					.yahoo.fr yaho.fr yaho.com yaho.co.uk yahoo.frr yahoo.ciom yahoo.vom yahoo.c yahoo.cim yahoo.co yaoo.col yahoo.colm yahoo.con
+					.sfr.fr sfr.fre sfr.frr sfr sfr.fe sfr.ff
+					.hotmail.fr homail.fr hotail.fr hotmail.fe hotmail.ff homail.com hotail.com hotmail.ciom hotmail.vom hotmail.c hotmail.cim hotmail.co hotmail.col hotmail.colm hotmail.con
+					.live.com life.fr live.frr live.fe live.ff life.com live.ciom live.vom live.c live.cim live.co live.col live.colm live.con
+					.outlook.fr outlok.fr outlok.com outlook.ciom outlook.vom outlook.c outlook.cim outlook.co outlook.col outlook.colm outlook.con outhlook.fr outhlook.com
+					.gmail.com gmail.fr gmal.fr gmail.frr gmail gmail.ciom g.mail gemail.com galml.com gmail.c gmail. gmail.cim gmail.clm gmail.co gmail.col gmail.comp gmail.con gmail.cpm gmail.de gmail.dk gmail.es gmail.org gmail.vom gmaill.com gmal.com gmeil.com gmail.vom gmail.colm
+					.googlemail.com googlemail.con googlemail.cpm googlemail.de googlemail.fr googlemail.co.uk googlemail.es googlemail.dk googlemail.vom googlemail.c googlemail.cim googlemail.co googlemail.col googlemail.colm googlemail.con
+					.aliceadsl.fr alice.fr aliseadsl.fr aliceadsl.com aliceadsl.frr aliceadsl aliceadsl.fe aliceadsl.ff
+					.voila.fr voila.com voila.frr voila voila.fe voila.ff
+					.skynet.be skynet.bee skynet
+					.aol.fr aol.ciom aol.vom aol.c aol.cim aol.co aol.col aol.colm aol.con
 				)
-	declare -a valid_domains=(  	neuf.fr neuf.fr neuf.fr neuf.fr
-					wanadoo.fr wanadoo.fr wanadoo.fr wanadoo.fr wanaoo.fr wanadoo.fr orange.fr orange.fr orange.fr orange.fr wanadoo.fr wanadoo.fr orange.fr wanadoo.fr orange.fr
-					free.fr free.fr free.fr free.fr
-					club-internet.fr club-internet.fr club-internet.fr club-internet.fr club-internet.fr
-					laposte.net laposte.net
-					yahoo.fr yahoo.com yahoo.co.uk yahoo.fr
-					sfr.fr sfr.fr sfr.fr
-					hotmail.fr hotmail.fr hotmail.com hotmail.com live.fr live.fr live.com
-					gmail.com gmail.com gmail.com gmail.fr gmail.com
-					aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.frr aliceadsl
-					voila.fr voila.fr voila.fr
-					skynet.be skynet.be
+	declare -a valid_domains=(  	neuf.fr neuf.fr neuf.fr neuf.fr neuf.fr neuf.fr neuf.fr
+					wanadoo.fr wanadoo.fr wanadoo.fr wanadoo.fr wanadoo.fr wanaoo.fr wanadoo.fr wanadoo.fr wanadoo.fr wanadoo.fr wanadoo.fr wanadoo.fr
+					orange.fr orange.fr orange.fr orange.fr orange.fr orange.fr orange.fr orange.fr orange.fr
+					free.fr free.fr free.fr free.fr free.fr free.fr free.fr
+					club-internet.fr club-internet.fr club-internet.fr club-internet.fr club-internet.fr club-internet.fr club-internet.fr club-internet.fr club-internet.fr
+					laposte.net laposte.net laposte.net
+					yahoo.fr yahoo.fr yahoo.com yahoo.co.uk yahoo.fr yahoo.com yahoo.com yahoo.com yahoo.com yahoo.com yahoo.com yahoo.com yahoo.com
+					sfr.fr sfr.fr sfr.fr sfr.fr sfr.fr sfr.fr
+					hotmail.fr hotmail.fr hotmail.fr hotmail.fr hotmail.fr hotmail.com hotmail.com hotmail.com hotmail.com hotmail.com hotmail.com hotmail.com hotmail.com hotmail.com hotmail.com
+					live.com live.fr live.fr live.fr live.fr live.com live.com live.com live.com live.com live.com live.com live.com live.com
+					outlook.fr outlook.fr outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.fr outlook.com
+					gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com
+					googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com
+					aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.frr aliceadsl aliceadsl.fr aliceadsl.fr
+					voila.fr voila.fr voila.fr voila.fr voila.fr voila.fr
+					skynet.be skynet.be skynet.be
+					aol.fr aol.com aol.com aol.com aol.com aol.com aol.com aol.com aol.com
 				)
 
 
 	local count=0
+
+	# Dumb check of the number of elements per table that should match
+	if [ ${#invalid_domains[@]} -ne ${#valid_domains[@]} ]; then
+		echo "Bogus domain tables. Cannot continue."
+		exit 1
+	fi
 
 	for i in "${invalid_domains[@]}"; do
 		if [ "$i" == "${mail#*@}" ]; then
@@ -170,7 +186,7 @@ function usage {
 	echo ""
 	echo "Outputs 4 files with suffixes:"
 	echo "$VALID_PREFIX: All emails that seem valid."
-	echo "$RFC_NON_COMPLIANT_PREFIX: All emails that aren't RFC822 compliant."
+	echo "$NON_RFC_COMPLIANT_PREFIX: All emails that aren't RFC822 compliant."
 	echo "$MISSING_MX_PREFIX: All emails of which domain doesn't have valid MX records."
 	echo "$AMBIGUOUS_PREFIX: All emails which seem ambiguous."
 	exit 1
@@ -185,7 +201,7 @@ function loop {
 	echo "Checking emails."
 
 	count=0
-	while IFS=$CSV_DELIMITER read $CSV_READ; do
+	while IFS=$CSV_INPUT_DELIMITER read $CSV_READ; do
 
 		email=$(lowercase "$email")
 		checkRFC822 "$email"
@@ -225,7 +241,7 @@ function sortAmbiguous {
 
 	# Test for username and domain
 	if [ $CSV_EMAIL_IS_FIRST_COLUMN == false ]; then
-		BEGIN=$CSV_DELIMITER
+		BEGIN=$CSV_INPUT_DELIMITER
 	else
 		BEGIN='^'
 	fi

@@ -188,6 +188,11 @@ function checkEnvironnment {
 		echo "[dd] not found, will not provide dd repair options."
 		DD_PRESENT=false
 	fi
+	
+	if ! type bc > /dev/null 2>&1; then
+		echo "[bc] not found. Cannot continue."
+		exit 1
+	fi
 
 	if type badblocks > /dev/null 2>&1; then
 		BADBLOCKS_PRESENT=true

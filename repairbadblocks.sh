@@ -257,7 +257,7 @@ function checkEnvironnment {
 }
 
 if [ "$1" != "" ] && [ "$2" != "" ]; then
-	if [ ! -w "$1" ] || [ ! -w "$2" ]; then
+	if [ ! -e "$1" ] || [ ! -w "$2" ]; then
 	Usage
 	else
 		DRIVE="$1"

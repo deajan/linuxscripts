@@ -3,7 +3,7 @@
 PROGRAM="repairbadsectors"
 AUTHOR="Orsiris de Jong & Frederick Fouquet"
 VERSION=0.1
-PROGRAM_BUILD=2016050701
+PROGRAM_BUILD=2017041101
 
 function Usage {
 echo "Repair bad blocks from hard disk"
@@ -47,6 +47,48 @@ function isNumeric {
         else
                	echo 0
         fi
+}
+
+function VerComp {
+        if [ "$1" == "" ] || [ "$2" == "" ]; then
+                echo "Bogus Vercomp values [$1] and [$2]."
+                return 1
+        fi
+
+        if [[ $1 == $2 ]]
+                then
+                        echo 0
+                return
+        fi
+
+        local IFS=.
+        local i ver1=($1) ver2=($2)
+        # fill empty fields in ver1 with zeros
+        for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
+        do
+                ver1[i]=0
+        done
+        for ((i=0; i<${#ver1[@]}; i++))
+        do
+          	if [[ -z ${ver2[i]} ]]
+                then
+                        # fill empty fields in ver2 with zeros
+                        ver2[i]=0
+                fi
+                if ((10#${ver1[i]} > 10#${ver2[i]}))
+                then
+                    	echo 1
+                        return
+                fi
+                if ((10#${ver1[i]} < 10#${ver2[i]}))
+                then
+                    	echo 2
+                        return
+                fi
+        done
+
+	echo 0
+	return
 }
 
 function readBadBlocks {
@@ -188,11 +230,6 @@ function checkEnvironnment {
 		echo "[dd] not found, will not provide dd repair options."
 		DD_PRESENT=false
 	fi
-	
-	if ! type bc > /dev/null 2>&1; then
-		echo "[bc] not found. Cannot continue."
-		exit 1
-	fi
 
 	if type badblocks > /dev/null 2>&1; then
 		BADBLOCKS_PRESENT=true
@@ -203,7 +240,7 @@ function checkEnvironnment {
 
 	if type hdparm > /dev/null 2>&1; then
 		hdparm_ver=$(hdparm -V | cut -f2 -d'v')
-		if [ $(bc <<< "$hdparm_ver>=8.0") -eq 1 ]; then
+		if [ $(VerComp "$hdparm_ver" "8.0") -lt 2 ]; then
 			HDPARM_PRESENT=true
 		else
 			echo "[hdparm] needs to be >= v8.0 to support repairs. Will not provide hdparm repair option."

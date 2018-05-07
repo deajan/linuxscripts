@@ -25,7 +25,7 @@ exclude_regex="[A-Z]:/Users/[^/]+/LocalService"
 exclude_regex="[A-Z]:/Users/[^/]+/NetworkService"
 exclude_regex="[A-Z]:/*/MSOCache"
 exclude_regex="[A-Z]:/*/Config.Msi"
-exclude_regex="[A-Z]:/*Thumbs.db"
+exclude_regex="[A-Z]:/*/Thumbs.db"
 
 # Chrome, Opera and Firefox temporary files
 exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Cache"

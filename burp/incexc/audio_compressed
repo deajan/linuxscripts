@@ -1,5 +1,3 @@
-# Due to an issue in log burp that seems to be limited to 166 lines
-# for incexc file, I have decided to include only most popular extensions
 exclude_comp=mp3
 exclude_comp=wma
 exclude_comp=ogg
@@ -10,5 +8,6 @@ exclude_comp=cdr
 exclude_comp=mpga
 exclude_comp=mpg3
 exclude_comp=aac
-exclude_comp=aac
 exclude_comp=flac
+exclude_comp=m4a
+

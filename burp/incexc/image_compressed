@@ -1,0 +1,9 @@
+# Due to an issue in log burp that seems to be limited to 166 lines
+exclude_comp=png
+exclude_comp=webp
+exclude_comp=jpg
+exclude_comp=jpeg
+exclude_comp=gif
+exclude_comp=tif
+exclude_comp=tiff
+

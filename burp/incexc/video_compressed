@@ -1,0 +1,26 @@
+# Due to an issue in log burp that seems to be limited to 166 lines
+# for incexc file, I have decided to include only most popular extensions
+exclude_comp=mp4
+exclude_comp=mkv
+exclude_comp=avi
+exclude_comp=mov
+exclude_comp=264
+exclude_comp=dv4
+exclude_comp=h264
+exclude_comp=flv
+exclude_comp=wmv
+exclude_comp=3gp
+exclude_comp=mjpeg
+exclude_comp=f4v
+exclude_comp=asf
+exclude_comp=xvid
+exclude_comp=mpgv
+exclude_comp=wmv3
+exclude_comp=h263
+exclude_comp=video
+exclude_comp=mpeg4
+exclude_comp=mpeg
+exclude_comp=divx
+exclude_comp=movie
+exclude_comp=qt
+exclude_comp=avchd

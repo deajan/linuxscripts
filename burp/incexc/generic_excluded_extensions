@@ -1,0 +1,6 @@
+exclude_ext=tmp
+exclude_ext=download
+exclude_ext=crdownload
+exclude_ext=lrprev
+exclude_ext=dwl
+exclude_ext=dwl2

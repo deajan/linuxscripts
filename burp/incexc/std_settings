@@ -2,8 +2,8 @@
 . image_compressed
 . video_compressed
 . generic_compressed
+. generic_excluded_extensions
 
 nobackup=.nobackup
 atime=0
 scan_problem_raises_error=0
-exclude_ext=tmp

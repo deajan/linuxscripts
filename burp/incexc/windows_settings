@@ -49,12 +49,26 @@ exclude_regex="[A-Z]:/pagefile.sys"
 exclude_regex="[A-Z]:/swapfile.sys"
 exclude_regex=^[A-Z]:/hiberfil\.sys$
 # Windows temp installer
-exclude_regex="[A-Z]:/$WINDOWS.~BT"
+exclude_regex="[A-Z]:/\$WINDOWS.~BT"
 # Windows 10 Upgrade previous install
 exclude_regex=[A-Z]:/Windows.old$
 
+# Windows filesystem directories
+exclude_regex=[A-Z]:/\$mft$
+exclude_regex=[A-Z]:/\$logfile$
+exclude_regex=[A-Z]:/\$volume$
+exclude_regex=[A-Z]:/\$bitmap$
+exclude_regex=[A-Z]:/\$extend$
+exclude_regex=[A-Z]:/\$reparse$
+
 # MacOS files
 exclude_regex=\.DS_Store
+
+# odrive sync dir
+exclude_regex=\.odrive
+
+# generic lock directories / files
+exclude_regex=\.lock
 
 # Remove VSS info, also strips NTFS acls (protocol 1 only)
 strip_vss=1

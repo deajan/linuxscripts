@@ -33,6 +33,9 @@ exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4"
 exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera Stable/Cache"
 exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/Cache"
 
+# Apple iPhone backups :(
+exclude_regex="[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Backup"
+
 # Windows downloads
 #exclude_regex="[A-Z]:/Users/[^/]+/Downloads"
 

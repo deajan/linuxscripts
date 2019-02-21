@@ -15,6 +15,9 @@ exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/InetCache"
 exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WebCache"
 exclude_regex="[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/AppCache"
 
+# Exclude LocalLow temporary folder
+exclude_regex="[A-Z]:/Users/[^/]+/AppData/LocalLow
+
 exclude_regex="[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Cookies"
 exclude_regex="[A-Z]:/Users/[^/]+/NetHood"
 exclude_regex="[A-Z]:/Users/[^/]+/PrintHood"

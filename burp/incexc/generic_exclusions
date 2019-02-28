@@ -9,5 +9,5 @@ exclude_regex = \.DS_Store
 exclude_regex = \.odrive
 
 # generic directories / files
-exclude_regex = \.lock
-exclude_regex = Cache.db
+exclude_regex = .*/Cache.db
+exclude_regex = .*/TemporaryFiles

@@ -39,10 +39,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/NetworkService
 
 # Generic system file exlusions
 exclude_regex = ^[A-Z]:/*/MSOCache
-exclude_regex = ^[A-Z]:/*/Config.Msi
-exclude_regex = ^[A-Z]:/*/Thumbs.db
-exclude_regex = ^[A-Z]:/*/iconcache*.db
-exclude_regex = ^[A-Z]:/*/thumbache*.db
+exclude_regex = ^[A-Z]:/*/Config\.Msi
+exclude_regex = ^[A-Z]:/*/Thumbs\.db
+exclude_regex = ^[A-Z]:/*/iconcache*\.db
+exclude_regex = ^[A-Z]:/*/thumbache*\.db
 
 # Chrome, Opera and Firefox temporary files
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Cache
@@ -68,14 +68,14 @@ exclude_regex = ^[A-Z]:/RECYCLER$
 exclude_regex = ^[A-Z]:/\$recycle\.bin$
 exclude_regex = ^[A-Z]:/System Volume Information$
 # swap file (Windows XP, 7, 8)
-exclude_regex = ^[A-Z]:/pagefile.sys$
+exclude_regex = ^[A-Z]:/pagefile\.sys$
 # swap file?? (Windows 8)
-exclude_regex = ^[A-Z]:/swapfile.sys$
+exclude_regex = ^[A-Z]:/swapfile\.sys$
 exclude_regex = ^[A-Z]:/hiberfil\.sys$
 # Windows temp installer
-exclude_regex = ^[A-Z]:/\$WINDOWS.~BT$
+exclude_regex = ^[A-Z]:/\$WINDOWS\.~BT$
 # Windows 10 Upgrade previous install
-exclude_regex = ^[A-Z]:/Windows.old$
+exclude_regex = ^[A-Z]:/Windows\.old$
 exclude_regex = ^[A-Z]:/PerfLogs$
 
 

@@ -12,7 +12,11 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Internet Explorer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Temporary Internet Files
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Client/Cache
-
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Internet Explorer
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/WebCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
 
 # Error reports
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WER
@@ -82,16 +86,6 @@ exclude_regex = ^[A-Z]:/\$volume$
 exclude_regex = ^[A-Z]:/\$bitmap$
 exclude_regex = ^[A-Z]:/\$extend$
 exclude_regex = ^[A-Z]:/\$reparse$
-
-# MacOS files
-exclude_regex = \.DS_Store
-
-# odrive sync dir
-exclude_regex = \.odrive
-
-# generic directories / files
-exclude_regex = \.lock
-exclude_regex = Cache.db
 
 # Remove VSS info, also strips NTFS acls (protocol 1 only)
 strip_vss=1

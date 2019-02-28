@@ -3,6 +3,7 @@
 . video_compressed
 . generic_compressed
 . generic_excluded_extensions
+. generic_exclusions
 
 nobackup=.nobackup
 atime=0

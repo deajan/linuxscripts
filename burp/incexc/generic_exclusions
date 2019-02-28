@@ -1,3 +1,13 @@
 # Generic multiplatform app dirs
 exclude_regex = .*/.*SkyDrive.*
 exclude_regex = .*/Dropbox
+
+# MacOS files
+exclude_regex = \.DS_Store
+
+# odrive sync dir
+exclude_regex = \.odrive
+
+# generic directories / files
+exclude_regex = \.lock
+exclude_regex = Cache.db

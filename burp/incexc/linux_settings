@@ -1,8 +1,8 @@
 # Linux cache files
 exclude_regex = \.cache
-exclude_regex=/\.cache/
-#exclude_regex=/tmp
-exclude_regex=/proc
-exclude=regex=/dev
-exclude_regex=/lost+found
+exclude_regex = /\.cache/
+exclude_regex = /tmp
+exclude_regex = /proc
+exclude_regex = /dev
+exclude_regex = /lost\+found
 exclude_fs=tmpfs

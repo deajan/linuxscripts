@@ -1,0 +1,3 @@
+# Generic multiplatform app dirs
+exclude_regex = .*/.*SkyDrive.*
+exclude_regex = .*/Dropbox

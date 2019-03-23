@@ -18,6 +18,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/WebCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
 
+# Various Win 10 caches
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/ActionCenterCache/
+
 # Error reports
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WER
 
@@ -26,6 +30,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/InetCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WebCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/AppCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/MicrosoftEdgeBackups/backups
+
+# Windows 10 Store Application cache and state
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AC/AppCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
 
 # Unnecessary folder exclusions
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Cookies

@@ -24,3 +24,5 @@ exclude_ext=dwl2
 # Microsoft Access lock file
 exclude_ext=laccdb
 exclude_ext=swp
+# Microsoft Outlook Exchange sync files
+exclude_ext=ost

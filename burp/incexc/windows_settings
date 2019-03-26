@@ -58,6 +58,12 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Defaul
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/ShaderCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Session Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Local Storage
+# Chrome can also store in Roaming instead of Local
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Media Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/ShaderCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Session Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Local Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera Stable/Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/Cache

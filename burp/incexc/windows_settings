@@ -17,12 +17,17 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Themes/Cac
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Internet Explorer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/WebCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCookies
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/WebServiceCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Diagnostics
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Microsoft/CryptnetUrlCache
 
 # Various Win 10 caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/ActionCenterCache/
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Feeds Cache
 
 # Error reports
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WER
@@ -32,13 +37,14 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/InetCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WebCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/AppCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/MicrosoftEdgeBackups/backups
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/MicrosoftEdge/SharedCacheContainers
 
 # Windows 10 Store Application cache and state
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AC
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/TempState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/RoamingState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AppData/User/Default/CacheStorage
 
 # Unnecessary folder exclusions
@@ -64,14 +70,26 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Defaul
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/ShaderCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Session Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Local Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Application Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Code Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/GPU Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Media Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Extensions/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Service Worker/CacheStorage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/ShaderCache
 # Chrome can also store in Roaming instead of Local
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Media Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/ShaderCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Session Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Local Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Extensions/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Application Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Code Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/GPU Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Media Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Extensions/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Service Worker/CacheStorage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/ShaderCache
 
 # Opera 41+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4
@@ -80,14 +98,24 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera Stable/Ca
 # Firefox 44+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/Cache
 
+# Google Apps Sync
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Google Apps Sync/Tracing
+
+# Adobe Acrobat DC
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Adobe/AcroCef/DC/Acrobat/Cache
+
 # Apple iPhone backups :(
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Backup
+
+# Java
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Sun/Java/Deployment/cache
 
 # Windows downloads
 exclude_regex = ^[A-Z]:/Users/[^/]+/Downloads
 
 # Windows update cache
 exclude_regex = ^[A-Z]:/Windows/SoftwareDistribution/Download
+
 exclude_regex = ^[A-Z]:/Windows/Temp
 exclude_regex = ^[A-Z]:/Windows/Downloaded Program Files
 exclude_regex = ^[A-Z]:/RECYCLER$

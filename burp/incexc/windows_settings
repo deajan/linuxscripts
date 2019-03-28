@@ -13,10 +13,12 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Temporary In
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Client/Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Temp
+C:/Users/loetitia.colas/AppData/Local/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Internet Explorer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/WebCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
 
 # Various Win 10 caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
@@ -32,7 +34,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/AppCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/MicrosoftEdgeBackups/backups
 
 # Windows 10 Store Application cache and state
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AC/AppCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AC
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/TempState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
 
 # Unnecessary folder exclusions

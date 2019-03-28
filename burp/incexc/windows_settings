@@ -37,6 +37,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/MicrosoftEdgeBackups/backups
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AC
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/TempState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AppData/User/Default/CacheStorage
 
 # Unnecessary folder exclusions
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Cookies

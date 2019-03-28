@@ -15,3 +15,6 @@ exclude_regex = \.odrive
 # generic directories / files
 exclude_regex = .*/Cache.db
 exclude_regex = .*/TemporaryFiles
+
+# generic Thumbs files
+exclude_regex = .*/Thumbs.db

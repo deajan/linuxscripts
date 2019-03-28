@@ -1,10 +1,10 @@
 # Generic multiplatform app dirs
-exclude_regex = .*/.*SkyDrive.*
+exclude_regex = .*/[^/]+SkyDrive[^/]+
 exclude_regex = .*/Dropbox
-exclude_regex = .*/.*SkyDrive.*
+exclude_regex = .*/[^/]+SkyDrive[^/]+
 
-# Microsoft Office lock files (eg ~$somefile.doc)
-exclude_regex = .*/~\$.*\..*
+# Microsoft Office lock files (eg */~$somefile.doc)
+exclude_regex = .*/~\$[^/]+\.[^/]+
 
 # MacOS files
 exclude_regex = \.DS_Store
@@ -13,8 +13,9 @@ exclude_regex = \.DS_Store
 exclude_regex = \.odrive
 
 # generic directories / files
-exclude_regex = .*/Cache.db
+exclude_regex = .*/Cache\.db
 exclude_regex = .*/TemporaryFiles
 
 # generic Thumbs files
-exclude_regex = .*/Thumbs.db
+exclude_regex = .*/Thumbs\.db
+exclude_regex = .*/thumbcache[^/]+\.db

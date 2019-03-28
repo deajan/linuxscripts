@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 PROGRAM="emailCheck.sh"
-AUTHOR="(L) 2014-2016 by Orsiris de Jong"
+AUTHOR="(L) 2014-2019 by Orsiris de Jong"
 CONTACT="http://www.netpower.fr/ - ozy@netpower.fr"
-PROGRAM_VERSION=0.6.3
-PROGRAM_BUILD=2016042101
+PROGRAM_VERSION=0.6.4
+PROGRAM_BUILD=2019032801
 
 ## Email correction script
 ## Lowers all characters of email
@@ -246,7 +246,7 @@ function sortAmbiguous {
 		BEGIN='^'
 	fi
 
-	cmd="$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|@test\.|@example\.|@exemple\.|@spam\."
+	cmd="$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|""$BEGIN""noreply@|""$BEGIN""no-reply@|@test\.|@example\.|@exemple\.|@spam\."
 	eval 'egrep $cmd < "$input" > "$output_ambiguous"'
 	eval 'egrep -v $cmd < "$input" > "$output_valid"'
 

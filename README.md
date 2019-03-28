@@ -1,5 +1,8 @@
 # linuxscripts
-Collection of useful scripts
+Collection of useful scripts / tools / files for Linux
+
+## Burp incexc rules
+A set of regex rules and generic settings for Backup and Restore Program (BURP) from Graham Keeling (http://burp.grke.org)
 
 ## emailCheck.sh
 

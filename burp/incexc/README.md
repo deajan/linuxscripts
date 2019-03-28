@@ -6,6 +6,8 @@ These are my personal burp incexc rules which:
 - Exclude unnecessary Linux paths
 - Set standard settings (which you may have to modify to fit your needs)
 
+The regex are PCRE and validated by https://regexr.com
+
 In order to use it, simply write the following in the client config file server side:
 
 - For linux clients

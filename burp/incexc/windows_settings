@@ -60,9 +60,6 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/NetworkService
 # Generic system file exlusions
 exclude_regex = ^[A-Z]:/*/MSOCache
 exclude_regex = ^[A-Z]:/*/Config\.Msi
-exclude_regex = ^[A-Z]:/*/Thumbs\.db
-exclude_regex = ^[A-Z]:/*/iconcache*\.db
-exclude_regex = ^[A-Z]:/*/thumbache*\.db
 
 # Chrome 66+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Cache

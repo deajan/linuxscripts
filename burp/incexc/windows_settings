@@ -107,6 +107,11 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Ba
 # Java
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Sun/Java/Deployment/cache
 
+# Dropbox, OneDrive, SkyDrive (not excluded by default because of cryptolockers attacks)
+#exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+
+#exclude_regex = ^[A-Z]:/Users/[^/]+/Dropbox
+#exclude_regex = ^[A-Z]:/Users/[^/]+/OneDrive
+
 # Windows downloads
 exclude_regex = ^[A-Z]:/Users/[^/]+/Downloads
 

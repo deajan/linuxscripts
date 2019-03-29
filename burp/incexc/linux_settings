@@ -6,3 +6,8 @@ exclude_regex = /proc
 exclude_regex = /dev
 exclude_regex = /lost\+found
 exclude_fs=tmpfs
+
+# Dropbox, OneDrive, SkyDrive (not excluded by default because of cryptolockers attacks)
+#exclude_regex = ^/home/[^/]+/SkyDrive[^/]+
+#exclude_regex = ^/home/[^/]+/Dropbox
+#exclude_regex = ^/home/[^/]+/OneDrive

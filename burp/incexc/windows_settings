@@ -21,7 +21,6 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCookies
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/WebServiceCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Diagnostics
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Microsoft/CryptnetUrlCache
 
 # Various Win 10 caches
@@ -31,6 +30,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Feeds Cache
 
 # Error reports
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WER
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/CrashDumps
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Diagnostics
 
 # Windows 10 Edge
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/InetCache
@@ -108,6 +109,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Ba
 
 # Java
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Sun/Java/Deployment/cache
+
+# Cisco Webex
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/WebEx/wbxcache
 
 # Dropbox, OneDrive, SkyDrive (not excluded by default because of cryptolockers attacks)
 #exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+

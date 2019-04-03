@@ -94,6 +94,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera Stable/Ca
 
 # Firefox 44+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Mozilla/Firefox/Crash Reports
 
 # Google Apps Sync
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Google Apps Sync/Tracing

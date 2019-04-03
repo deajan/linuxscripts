@@ -8,10 +8,10 @@ exclude_regex = \.DS_Store
 exclude_regex = \.odrive
 
 # generic directories / files
-exclude_regex = .*/Cache\.db
+exclude_regex = .*/[Cc]ache?[^/]+\.db
 exclude_regex = .*/TemporaryFiles
 
 # generic Thumbs files
-exclude_regex = .*/Thumbs\.db
-exclude_regex = .*/thumbcache[^/]+\.db
-exclude_regex = .*/iconcache[^/]+\.db
+exclude_regex = .*/[Tt]humbs\.db
+exclude_regex = .*/[Tt]humb[Cc]ache?[^/]+\.db
+exclude_regex = .*\[Ii]con[Cc]ache?[^/]+\.db

@@ -93,7 +93,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera Stable/Cache
 
 # Firefox 44+
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/?[^/]+Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[Tt]humbnails
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Mozilla/Firefox/Crash Reports
 
 # Google Apps Sync

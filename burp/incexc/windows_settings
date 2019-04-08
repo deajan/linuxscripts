@@ -91,7 +91,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Defa
 
 # Opera 41+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera Stable/Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera [^/]+/?[^/]+Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/Local Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/Crash Reports
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/?[^/]+Cache
 
 # Firefox 44+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/?[^/]+Cache

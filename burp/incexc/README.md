@@ -4,6 +4,7 @@ These are my personal burp incexc rules which:
 - Exclude a lot of temporary / lock / unuseful file extensions / Outlook offline cache from Exchange
 - Exclude some cloud Program cache like SkyDrive / DropBox and others
 - Exclude loads of Windows temp/cache/system files
+- Exclude browser caches
 - Exclude unnecessary Linux paths
 - Set standard settings (which you may have to modify to fit your needs)
 

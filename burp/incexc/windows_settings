@@ -90,6 +90,12 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[Tt]humbnails
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Mozilla/Firefox/Crash Reports
 
+# Thunderbird
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Mozilla Thunderbird/updates
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Profiles/[^/]+/[Cc]ache?[^/]+
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Thunderbird/Crash Reports
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Thunderbird/Profiles/[^/]+/crashes
+
 # Google Apps Sync
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Google Apps Sync/Tracing
 

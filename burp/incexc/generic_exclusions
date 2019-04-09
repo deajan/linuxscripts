@@ -15,3 +15,6 @@ exclude_regex = .*/TemporaryFiles
 exclude_regex = .*/[Tt]humbs\.db
 exclude_regex = .*/[Tt]humb[Cc]ache?[^/]+\.db
 exclude_regex = .*/[Ii]con[Cc]ache?[^/]+\.db
+
+# Synology NAS working directory
+exclude_regex = .*/.SynologyWorkingDirectory

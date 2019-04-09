@@ -14,4 +14,4 @@ exclude_regex = .*/TemporaryFiles
 # generic Thumbs files
 exclude_regex = .*/[Tt]humbs\.db
 exclude_regex = .*/[Tt]humb[Cc]ache?[^/]+\.db
-exclude_regex = .*\[Ii]con[Cc]ache?[^/]+\.db
+exclude_regex = .*/[Ii]con[Cc]ache?[^/]+\.db

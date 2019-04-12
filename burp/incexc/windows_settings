@@ -15,8 +15,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Clie
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Themes/CachedFiles
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Internet Explorer
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/WebCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCookies
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
@@ -35,9 +34,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/CrashDumps
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Diagnostics
 
 # Windows 10 Edge
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/InetCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/WebCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/AppCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/MicrosoftEdgeBackups/backups
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/MicrosoftEdge/SharedCacheContainers
 
@@ -68,14 +65,15 @@ exclude_regex = ^[A-Z]:/*/MSOCache
 exclude_regex = ^[A-Z]:/*/Config\.Msi
 
 # Chrome 66+
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/?[^/]+Cache
+
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/ShaderCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Session Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Local Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Extensions/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Service Worker/CacheStorage
 # Chrome can also store in Roaming instead of Local
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/?[^/]+Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/ShaderCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Session Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Local Storage
@@ -84,19 +82,18 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Defa
 
 # Opera 41+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera [^/]+/?[^/]+Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera Software/Opera [^/]+/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/Local Storage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/Crash Reports
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/?[^/]+Cache
-
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/[^/]*[Cc]ache
 # Firefox 44+
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/?[^/]+Cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[Tt]humbnails
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Mozilla/Firefox/Crash Reports
 
 # Thunderbird
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Mozilla Thunderbird/updates
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Profiles/[^/]+/[Cc]ache?[^/]+
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Profiles/[^/]+/[Cc]ache[^/]*
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Thunderbird/Crash Reports
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Thunderbird/Profiles/[^/]+/crashes
 

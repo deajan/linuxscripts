@@ -90,9 +90,11 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/S
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/lockfile
 
 # Firefox 44+
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[^/]*[Cc]ache
+# There  might exist a cache or a cache2 directory
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[^/]*[Cc]ache2?
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[Tt]humbnails
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Mozilla/Firefox/Crash Reports
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[^/]*[Cc]ache2
 
 # Thunderbird
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Mozilla Thunderbird/updates

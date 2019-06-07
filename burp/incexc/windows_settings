@@ -128,6 +128,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/Downloads
 # Windows update cache
 exclude_regex = ^[A-Z]:/Windows/SoftwareDistribution/Download
 
+# Windows offline files
+exclude_regex = ^[A-Z]:/Windows/CSC
+
 exclude_regex = ^[A-Z]:/Windows/Temp
 exclude_regex = ^[A-Z]:/Windows/Downloaded Program Files
 exclude_regex = ^[A-Z]:/RECYCLER$

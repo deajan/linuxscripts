@@ -15,9 +15,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Clie
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Themes/CachedFiles
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Internet Explorer
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/[^/]*[Cc]ache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/[^/]*[Cc]aches?
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/InetCookies
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFileCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/Office/Recent
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/WebServiceCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Microsoft/CryptnetUrlCache
@@ -121,6 +122,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/WebEx/wbxcache
 #exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+
 #exclude_regex = ^[A-Z]:/Users/[^/]+/Dropbox
 #exclude_regex = ^[A-Z]:/Users/[^/]+/OneDrive
+
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/OneDrive/logs
 
 # Windows downloads
 exclude_regex = ^[A-Z]:/Users/[^/]+/Downloads

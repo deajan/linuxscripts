@@ -66,20 +66,14 @@ exclude_regex = ^[A-Z]:/*/MSOCache
 exclude_regex = ^[A-Z]:/*/Config\.Msi
 
 # Chrome 66+
-
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/[^/]*[Cc]ache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/ShaderCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Session Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Local Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Extensions/Temp
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Chrome/User Data/Default/Service Worker/CacheStorage
 # Chrome can also store in Roaming instead of Local
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/[^/]*[Cc]ache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/ShaderCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Session Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Local Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Extensions/Temp
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Google/Chrome/User Data/Default/Service Worker/CacheStorage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/[^/]*[Cc]ache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/ShaderCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Session Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Local Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Extensions/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Service Worker/CacheStorage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/File System
 
 # Opera 41+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4

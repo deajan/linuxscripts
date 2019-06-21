@@ -4,6 +4,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow
 exclude_regex = ^[A-Z]:/Documents and Settings/[^/]+/Cookies
 exclude_regex = ^[A-Z]:/Documents and Settings/[^/]+/Recent
 exclude_regex = ^[A-Z]:/Documents and Settings/[^/]+/Local Settings/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Recent
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/History
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Application Data
@@ -111,6 +112,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Adobe/AcroCef/DC/Acrobat/Cache
 
 # Apple iPhone backups :(
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Backup
+# iTunes downloaded album artwork
+exclude_regex = ^[A-Z]:/Users/[^/]+/Music/iTunes/Album Artwork/Download
 
 # Java
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Sun/Java/Deployment/cache

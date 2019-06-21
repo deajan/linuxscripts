@@ -11,6 +11,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Temporary Internet Files
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Internet Explorer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Temporary Internet Files
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/History
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Client/Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Themes/CachedFiles
@@ -23,6 +24,11 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/WebServiceCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Microsoft/CryptnetUrlCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Downloaded Installations
+# Temp folder for files that are ready to be burned on DVD
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Burn
+
+# Generic application cache & temp folders (excludes all aaaCacheaaa or bbbTempbbb dirs)
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|LocalLow|Roaming)/[^/]+/[^/]*([Cc]ache|[Tt]emp)[^/]*
 
 # Various Win 10 caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches

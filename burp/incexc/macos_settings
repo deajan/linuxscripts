@@ -1,0 +1,25 @@
+# Generic exclusions
+exclude_regex = /dev
+exclude_regex = /Network
+exclude_regex = /tmp
+exclude_regex = /cores
+exclude_regex = /afs
+exclude_regex = /automount
+exclude_regex = /private/Network
+exclude_regex = /private/tmp
+exclude_regex = /private/var/tmp
+exclude_regex = /private/var/folders
+exclude_regex = /private/var/run
+exclude_regex = /private/var/spool/postfix
+exclude_regex = /private/var/automount
+exclude_regex = /private/var/db/fseventsd
+exclude_regex = /Previous Systems
+exclude_regex = .*/lost+found
+
+exclude_regex = .*\.Trash.*
+exclude_regex = /\.vol/.*
+exclude_regex = .*/Network Trash Folder
+exclude_regex = .*\.fseventsd.*
+exclude_regex = *\.Spotlight-.*
+exclude_regex = .*Mobile.*Backups/.*
+

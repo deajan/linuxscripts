@@ -38,7 +38,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows Live Contact
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Application Shortcuts
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Notifications
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/UsrClass\.dat\.LOG[0-9]+
-
+exclude_regex = ^[A-Z]:/Users/[^/]+/ntuser\.dat\.LOG[0-9]+
 
 # Temp folder for files that are ready to be burned on DVD
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Burn

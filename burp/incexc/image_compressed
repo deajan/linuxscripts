@@ -1,7 +1,7 @@
-exclude_comp=png
-exclude_comp=webp
+exclude_comp=gif
 exclude_comp=jpg
 exclude_comp=jpeg
-exclude_comp=gif
+exclude_comp=png
+exclude_comp=webp
 exclude_comp=tif
 exclude_comp=tiff

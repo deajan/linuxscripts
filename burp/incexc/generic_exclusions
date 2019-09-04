@@ -7,14 +7,17 @@ exclude_regex = \.DS_Store
 # odrive sync dir
 exclude_regex = \.odrive
 
-# generic directories / files
+# Generic directories / files
 exclude_regex = .*/[Cc]ache?[^/]+\.db
 exclude_regex = .*/TemporaryFiles
 
-# generic Thumbs files
+# Generic Thumbs files
 exclude_regex = .*/[Tt]humbs\.db
 exclude_regex = .*/[Tt]humb[Cc]ache?[^/]+\.db
 exclude_regex = .*/[Ii]con[Cc]ache?[^/]+\.db
+
+# Generic Thumbs directories
+exclude_regex = .*/\.?[Tt]humbnails
 
 # Synology NAS working directory
 exclude_regex = .*/.SynologyWorkingDirectory

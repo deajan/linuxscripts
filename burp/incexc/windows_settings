@@ -1,4 +1,5 @@
-# Generic excludes
+#### Generic Microsoft excludes
+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow
 exclude_regex = ^[A-Z]:/Documents and Settings/[^/]+/Cookies
@@ -59,6 +60,40 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AppData/User/De
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Notifications
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Explorer
 
+# Windows downloads
+exclude_regex = ^[A-Z]:/Users/[^/]+/Downloads
+
+# Windows update cache
+exclude_regex = ^[A-Z]:/Windows/SoftwareDistribution/Download
+
+# Windows offline files
+exclude_regex = ^[A-Z]:/Windows/CSC
+
+exclude_regex = ^[A-Z]:/Windows/Temp
+exclude_regex = ^[A-Z]:/Windows/Downloaded Program Files
+exclude_regex = ^[A-Z]:/RECYCLER$
+exclude_regex = ^[A-Z]:/\$recycle\.bin$
+exclude_regex = ^[A-Z]:/System Volume Information$
+# swap file (Windows XP, 7, 8)
+exclude_regex = ^[A-Z]:/pagefile\.sys$
+# swap file?? (Windows 8)
+exclude_regex = ^[A-Z]:/swapfile\.sys$
+exclude_regex = ^[A-Z]:/hiberfil\.sys$
+# Windows temp installer
+exclude_regex = ^[A-Z]:/\$WINDOWS\.~BT$
+# Windows 10 Upgrade previous install
+exclude_regex = ^[A-Z]:/Windows\.old$
+exclude_regex = ^[A-Z]:/PerfLogs$
+
+
+# Windows filesystem directories
+exclude_regex = ^[A-Z]:/\$mft$
+exclude_regex = ^[A-Z]:/\$logfile$
+exclude_regex = ^[A-Z]:/\$volume$
+exclude_regex = ^[A-Z]:/\$bitmap$
+exclude_regex = ^[A-Z]:/\$extend$
+exclude_regex = ^[A-Z]:/\$reparse$
+
 # Onedrive user executables
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/OneDrive
 
@@ -75,6 +110,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/NetworkService
 # Generic system file exlusions
 exclude_regex = ^[A-Z]:/*/MSOCache
 exclude_regex = ^[A-Z]:/*/Config\.Msi
+
+#### Applications
 
 # Chrome 66+
 # Chrome can also store in Roaming instead of Local
@@ -145,41 +182,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-Remote Supp
 #exclude_regex = ^[A-Z]:/Users/[^/]+/Dropbox
 #exclude_regex = ^[A-Z]:/Users/[^/]+/OneDrive
 
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/OneDrive/logs
-
-# Windows downloads
-exclude_regex = ^[A-Z]:/Users/[^/]+/Downloads
-
-# Windows update cache
-exclude_regex = ^[A-Z]:/Windows/SoftwareDistribution/Download
-
-# Windows offline files
-exclude_regex = ^[A-Z]:/Windows/CSC
-
-exclude_regex = ^[A-Z]:/Windows/Temp
-exclude_regex = ^[A-Z]:/Windows/Downloaded Program Files
-exclude_regex = ^[A-Z]:/RECYCLER$
-exclude_regex = ^[A-Z]:/\$recycle\.bin$
-exclude_regex = ^[A-Z]:/System Volume Information$
-# swap file (Windows XP, 7, 8)
-exclude_regex = ^[A-Z]:/pagefile\.sys$
-# swap file?? (Windows 8)
-exclude_regex = ^[A-Z]:/swapfile\.sys$
-exclude_regex = ^[A-Z]:/hiberfil\.sys$
-# Windows temp installer
-exclude_regex = ^[A-Z]:/\$WINDOWS\.~BT$
-# Windows 10 Upgrade previous install
-exclude_regex = ^[A-Z]:/Windows\.old$
-exclude_regex = ^[A-Z]:/PerfLogs$
-
-
-# Windows filesystem directories
-exclude_regex = ^[A-Z]:/\$mft$
-exclude_regex = ^[A-Z]:/\$logfile$
-exclude_regex = ^[A-Z]:/\$volume$
-exclude_regex = ^[A-Z]:/\$bitmap$
-exclude_regex = ^[A-Z]:/\$extend$
-exclude_regex = ^[A-Z]:/\$reparse$
+#### Burp settings
 
 # Remove VSS info, also strips NTFS acls (protocol 1 only)
 strip_vss=1

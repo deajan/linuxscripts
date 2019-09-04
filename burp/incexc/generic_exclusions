@@ -23,7 +23,7 @@ exclude_regex = .*/\.?[Tt]humbnails
 exclude_regex = .*/[Tt]e?mp
 
 # Generic cache dir
-exclude_regex = .*/([Ff]ont|[Ff]ile|[Dd]ist|[Nn]ative|[Pp]lay|[Pp]lugin|[Aa]sset|[Aa]ctivities|[Ss]cript|[Gg]pu|[Cc]ode|[Ww]eb|JS|CRL)? ?[Cc]ache
+exclude_regex = .*/([Ff]ont|[Ff]ile|[Dd]ist|[Nn]ative|[Pp]lay|[Pp]lugin|[Aa]sset|[Aa]ctivities|[Ss]cript|[Gg]pu|[Cc]ode|[Ll]ocal|[Ss]ession|[Ww]eb|JS|CRL)? ?[Cc]ache
 exclude_regex = .*/[Cc]ache[Ss]torage
 
 # Synology NAS working directory

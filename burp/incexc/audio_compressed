@@ -8,6 +8,7 @@ exclude_comp=mkf
 exclude_comp=mp3
 exclude_comp=mpg3
 exclude_comp=mpga
+exclude_comp=oga
 exclude_comp=ogg
 exclude_comp=wma
 

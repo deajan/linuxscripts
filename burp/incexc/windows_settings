@@ -69,6 +69,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/LocalCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/RoamingState
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AppData/User/Default/CacheStorage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AppData/CacheStorage
 
 # Windows 10 various stuff
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Notifications

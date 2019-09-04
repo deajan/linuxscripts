@@ -138,6 +138,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User D
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Extensions/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Service Worker/CacheStorage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/File System
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/SwReporter
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/PepperFlash
 
 # Opera 41+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Opera/Opera/profile/cache4
@@ -199,6 +201,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-Remote Supp
 #exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+
 #exclude_regex = ^[A-Z]:/Users/[^/]+/Dropbox
 #exclude_regex = ^[A-Z]:/Users/[^/]+/OneDrive
+
+# Dropbox config directory
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Dropbox
 
 #### Burp settings
 

@@ -15,7 +15,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Temporary In
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/History
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Client/Cache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/[Tt]e?mp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Themes/CachedFiles
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Internet Explorer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/[^/]+/[^/]*[Cc]aches?
@@ -27,8 +27,22 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/WebS
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/Lync/Tracing
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Microsoft/CryptnetUrlCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Downloaded Installations
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/GroupPolicy
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/AppV
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Messenger
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/OneNote
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Terminal Server Client
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/UEV
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows Live
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows Live Contacts
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Application Shortcuts
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Notifications
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/UsrClass\.dat\.LOG[0-9]+
+
+
 # Temp folder for files that are ready to be burned on DVD
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Burn
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/CD Burning
 
 # Generic application cache & temp folders (excludes all aaaCacheaaa or bbbTempbbb dirs)
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|LocalLow|Roaming)/[^/]+/[^/]*([Cc]ache|[Tt]emp)[^/]*
@@ -106,6 +120,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/Recent
 exclude_regex = ^[A-Z]:/Users/[^/]+/SendTo
 exclude_regex = ^[A-Z]:/Users/[^/]+/LocalService
 exclude_regex = ^[A-Z]:/Users/[^/]+/NetworkService
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow
+exclude_regex = ^[A-Z]:/Users/[^/]+/Tracing
 
 # Generic system file exlusions
 exclude_regex = ^[A-Z]:/*/MSOCache
@@ -143,6 +159,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[Tt]humbnails
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Mozilla/Firefox/Crash Reports
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/[^/]*[Cc]ache2
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Mozilla/Firefox/Profiles/[^/]+/sessionstore\.bak
 
 # Thunderbird
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Thunderbird/Mozilla Thunderbird/updates
@@ -168,7 +185,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Ba
 exclude_regex = ^[A-Z]:/Users/[^/]+/Music/iTunes/Album Artwork/Download
 
 # Java
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Sun/Java/Deployment/cache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Sun
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(LocalLow|Roaming)/Sun/Java/Deployment/(cache|log|tmp)
 
 # Cisco Webex
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/WebEx/wbxcache

@@ -12,17 +12,26 @@ exclude_ext=err
 exclude_ext=log
 exclude_ext=lock
 exclude_ext=lockfile
+
 # Browser not finished downloads
 exclude_ext=download
 exclude_ext=crdownload
 exclude_ext=part
+
 # Adobe lightroom preview files
 exclude_ext=lrprev
+
 # AutoCAD
 exclude_ext=dwl
 exclude_ext=dwl2
+
 # Microsoft Access lock file
 exclude_ext=laccdb
 exclude_ext=swp
+
 # Microsoft Outlook Exchange sync files
 exclude_ext=ost
+
+# Python compiled files
+exclude_ext=pyc
+exclude_ext=pyo

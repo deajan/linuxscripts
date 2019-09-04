@@ -199,6 +199,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Spark/logs
 # TeamViewer / SimpleHelp quick suppor
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/TeamViewer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-Remote Support
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-SimpleHelp Technician
+
+# Zoom remote tool
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Zoom
 
 # Dropbox, OneDrive, SkyDrive data directories (not excluded by default because of cryptolockers attacks)
 #exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+
@@ -207,6 +211,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-Remote Supp
 
 # Dropbox config directory
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Dropbox
+
+# Owncloud executables
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/ownCloud/.*\.exe
 
 #### Burp settings
 

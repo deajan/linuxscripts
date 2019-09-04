@@ -138,6 +138,8 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User D
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/Extensions/Temp
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/Service Worker/CacheStorage
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/File System
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/LOG
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/.*/LOG
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/SwReporter
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/PepperFlash
 
@@ -149,11 +151,15 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/C
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/Sessions
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/lockfile
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/LOG
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Opera Software/Opera [^/]+/.*/LOG
 
 # Vivaldi 1.x+
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Vivaldi/Application
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Vivaldi/User Data/[^/]+/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Vivaldi/User Data/[^/]+/Local Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Vivaldi/User Data/[^/]+/LOG
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Vivaldi/User Data/[^/]+/.*/LOG
 
 # Firefox 44+
 # There  might exist a cache or a cache2 directory

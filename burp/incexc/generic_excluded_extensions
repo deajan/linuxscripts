@@ -1,17 +1,22 @@
-exclude_ext=tmp
+
+# Generic excluded extensions
+
+exclude_ext=back
 exclude_ext=bak
-exclude_ext=temp
+exclude_ext=bkp
 exclude_ext=cache
 exclude_ext=chk
 exclude_ext=dmp
 exclude_ext=dump
-exclude_ext=old
-exclude_ext=bkp
-exclude_ext=back
 exclude_ext=err
-exclude_ext=log
 exclude_ext=lock
 exclude_ext=lockfile
+exclude_ext=log
+exclude_ext=log1
+exclude_ext=log2
+exclude_ext=old
+exclude_ext=tmp
+exclude_ext=temp
 
 # Browser not finished downloads
 exclude_ext=download
@@ -24,6 +29,7 @@ exclude_ext=lrprev
 # AutoCAD
 exclude_ext=dwl
 exclude_ext=dwl2
+exclude_ext=atmp
 
 # Microsoft Access lock file
 exclude_ext=laccdb

@@ -48,6 +48,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/CD Burning
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|LocalLow|Roaming)/[^/]+/[^/]*([Cc]ache|[Tt]emp)[^/]*
 
 # Various Win 10 caches
+exclude_regex = .*/(OfficeFile|SmartLookup|BackstageInAppNav|MruService)Cache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Caches
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/ActionCenterCache/
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Feeds Cache

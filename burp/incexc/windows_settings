@@ -131,13 +131,13 @@ exclude_regex = ^[A-Z]:/*/Config\.Msi
 
 # Chrome 66+
 # Chrome can also store in Roaming instead of Local
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/[^/]*[Cc]ache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/[^/]*[Cc]ache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/ShaderCache
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Session Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Local Storage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Extensions/Temp
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/Service Worker/CacheStorage
-exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/Default/File System
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/Session Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/Local Storage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/Extensions/Temp
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/Service Worker/CacheStorage
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/File System
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/SwReporter
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/PepperFlash
 
@@ -192,6 +192,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(LocalLow|Roaming)/Sun/Java/Deployme
 
 # Cisco Webex
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/WebEx/wbxcache
+
+# Ignite Realtime Spark client logs
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Spark/logs
 
 # TeamViewer / SimpleHelp quick suppor
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/TeamViewer

@@ -19,5 +19,8 @@ exclude_regex = .*/[Ii]con[Cc]ache?[^/]+\.db
 # Generic Thumbs directories
 exclude_regex = .*/\.?[Tt]humbnails
 
+# Generic tmp dir
+exclude_regex = .*/[Tt]e?mp
+
 # Synology NAS working directory
 exclude_regex = .*/.SynologyWorkingDirectory

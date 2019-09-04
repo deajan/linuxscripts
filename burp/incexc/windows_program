@@ -1,0 +1,7 @@
+# Exclusion list that removes most of Windows system and program files
+# This list is a complementary to windows_settings
+
+exclude_regex = ^[A-Z]:/Windows
+exclude_regex = ^[A-Z]:/Program Files
+exclude_regex = ^[A-Z]:/Program Files (x86)
+exclude_regex = ^[A-Z]:/ProgramData

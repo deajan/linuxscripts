@@ -140,7 +140,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/WebEx/wbxcache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/TeamViewer
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-Remote Support
 
-# Dropbox, OneDrive, SkyDrive (not excluded by default because of cryptolockers attacks)
+# Dropbox, OneDrive, SkyDrive data directories (not excluded by default because of cryptolockers attacks)
 #exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+
 #exclude_regex = ^[A-Z]:/Users/[^/]+/Dropbox
 #exclude_regex = ^[A-Z]:/Users/[^/]+/OneDrive

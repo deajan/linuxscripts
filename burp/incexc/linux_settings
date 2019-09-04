@@ -1,13 +1,20 @@
-# Linux cache files
-exclude_regex = \.cache
-exclude_regex = /\.cache/
+# Standard linux system paths
 exclude_regex = /tmp
 exclude_regex = /proc
 exclude_regex = /dev
+exclude_regex = /sys
+exclude_regex = /run
+exclude_regex = /mnt
+exclude_regex = /media
 exclude_regex = /lost\+found
 exclude_fs=tmpfs
 
-# Dropbox, OneDrive, SkyDrive (not excluded by default because of cryptolockers attacks)
+# Linux cache files
+exclude_regex = \.cache
+exclude_regex = /\.cache/
+
+
+# Dropbox, OneDrive, SkyDrive data directories (not excluded by default because of cryptolockers attacks)
 #exclude_regex = ^/home/[^/]+/SkyDrive[^/]+
 #exclude_regex = ^/home/[^/]+/Dropbox
 #exclude_regex = ^/home/[^/]+/OneDrive

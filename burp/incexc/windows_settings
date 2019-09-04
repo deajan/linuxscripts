@@ -23,6 +23,7 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft Office/[^/]+OfficeFi
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/[^/]+/Microsoft/Office/Recent
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Outlook/RoamCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/WebServiceCache
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Office/[0-9\.]+/Lync/Tracing
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Microsoft/CryptnetUrlCache
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Downloaded Installations
 # Temp folder for files that are ready to be burned on DVD
@@ -57,6 +58,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Packages/[^/]+/AppData/User/De
 # Windows 10 various stuff
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Notifications
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/Windows/Explorer
+
+# Onedrive user executables
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Microsoft/OneDrive
 
 # Unnecessary folder exclusions
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Microsoft/Windows/Cookies
@@ -118,6 +122,9 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Google/Google Apps Sync/Tracin
 # Adobe Acrobat DC
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/Adobe/AcroCef/DC/Acrobat/Cache
 
+# Apple Logs
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Apple Computer/Logs
+
 # Apple iPhone backups :(
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Roaming/Apple Computer/MobileSync/Backup
 # iTunes downloaded album artwork
@@ -128,6 +135,10 @@ exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/LocalLow/Sun/Java/Deployment/cache
 
 # Cisco Webex
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local/WebEx/wbxcache
+
+# TeamViewer / SimpleHelp quick suppor
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/TeamViewer
+exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/JWrapper-Remote Support
 
 # Dropbox, OneDrive, SkyDrive (not excluded by default because of cryptolockers attacks)
 #exclude_regex = ^[A-Z]:/Users/[^/]+/SkyDrive[^/]+

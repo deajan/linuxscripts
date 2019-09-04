@@ -1,6 +1,6 @@
 # Standard linux system paths
 exclude_regex = /dev
-exclude_regex = /lost\+found
+exclude_regex = .*/lost\+found
 exclude_regex = /media
 exclude_regex = /mnt
 exclude_regex = /proc

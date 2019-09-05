@@ -1,17 +1,17 @@
 # Standard linux system paths
-exclude_regex = /dev
+exclude_regex = ^/dev
 exclude_regex = .*/lost\+found
-exclude_regex = /media
-exclude_regex = /mnt
-exclude_regex = /proc
-exclude_regex = /run
-exclude_regex = /selinux
-exclude_regex = /sys
-exclude_regex = /tmp
-exclude_regex = /var/cache
-exclude_regex = /var/log
-exclude_regex = /var/run
-exclude_regex = /var/tmp
+exclude_regex = ^/media
+exclude_regex = ^/mnt
+exclude_regex = ^/proc
+exclude_regex = ^/run
+exclude_regex = ^/selinux
+exclude_regex = ^/sys
+exclude_regex = ^/tmp
+exclude_regex = ^/var/cache
+exclude_regex = ^/var/log
+exclude_regex = ^/var/run
+exclude_regex = ^/var/tmp
 
 exclude_fs=tmpfs
 
@@ -20,15 +20,15 @@ exclude_regex = \.cache
 exclude_regex = /\.cache/
 
 # Generic home exclusions
-exclude_regex = /home/[^/]+/.debug
-exclude_regex = /home/[^/]+/.dbus
-exclude_regex = /home/[^/]+/.gvfs
-exclude_regex = /home/[^/]+/.local/share/gvfs-metadata
-exclude_regex = /home/[^/]+/.local/share/Trash
-exclude_regex = /home/[^/]+/.recently-used
-exclude_regex = /home/[^/]+/.thumbnails
-exclude_regex = /home/[^/]+/.xession-errors
-exclude_regex = /home/[^/]+/.Trash
+exclude_regex = ^/home/[^/]+/.debug
+exclude_regex = ^/home/[^/]+/.dbus
+exclude_regex = ^/home/[^/]+/.gvfs
+exclude_regex = ^/home/[^/]+/.local/share/gvfs-metadata
+exclude_regex = ^/home/[^/]+/.local/share/Trash
+exclude_regex = ^/home/[^/]+/.recently-used
+exclude_regex = ^/home/[^/]+/.thumbnails
+exclude_regex = ^/home/[^/]+/.xession-errors
+exclude_regex = ^/home/[^/]+/.Trash
 
 # Dropbox, OneDrive, SkyDrive data directories (not excluded by default because of cryptolockers attacks)
 #exclude_regex = ^/home/[^/]+/SkyDrive[^/]+

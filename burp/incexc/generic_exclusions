@@ -12,9 +12,7 @@ exclude_regex = .*/[Cc]ache?[^/]+\.db
 exclude_regex = .*/TemporaryFiles
 
 # Generic Thumbs files
-exclude_regex = .*/[Tt]humbs\.db
-exclude_regex = .*/[Tt]humb[Cc]ache?[^/]+\.db
-exclude_regex = .*/[Ii]con[Cc]ache?[^/]+\.db
+exclude_regex = .*/([Tt]humb|[Ii]con)s?([Cc]ache)?.*\.db
 
 # Generic Thumbs directories
 exclude_regex = .*/\.?[Tt]humbnails

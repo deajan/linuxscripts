@@ -39,5 +39,5 @@ exclude_ext=swp
 exclude_ext=ost
 
 # Python compiled files
-exclude_ext=pyc
-exclude_ext=pyo
+exclude_ext=py[cod]
+

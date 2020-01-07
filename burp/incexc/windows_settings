@@ -131,6 +131,9 @@ exclude_regex = ^[A-Z]:/*/Config\.Msi
 
 #### Applications
 
+# Office telemetry data
+exclude_regex = exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/Local//Microsoft/Office/OTeleData_.*.etl
+
 # Chrome 66+
 # Chrome can also store in Roaming instead of Local
 exclude_regex = ^[A-Z]:/Users/[^/]+/AppData/(Local|Roaming)/Google/Chrome/User Data/(Default|Profile [0-9]+)/[^/]*[Cc]ache

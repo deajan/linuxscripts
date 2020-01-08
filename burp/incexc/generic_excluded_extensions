@@ -36,7 +36,7 @@ exclude_ext=laccdb
 exclude_ext=swp
 
 # Microsoft Outlook Exchange sync files
-exclude_ext=ost
+#exclude_ext=ost
 
 # Microsoft Tracelog files
 exclude_ext=etl

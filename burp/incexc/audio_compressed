@@ -1,5 +1,9 @@
 exclude_comp=aac
 exclude_comp=ac3
+exclude_comp=aif
+exclude_comp=aiff
+exclude_comp=asf
+exclude_comp=asx
 exclude_comp=cdda
 exclude_comp=cdr
 exclude_comp=flac

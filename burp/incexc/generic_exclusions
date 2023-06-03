@@ -18,11 +18,12 @@ exclude_regex = .*/([Tt]humb|[Ii]con)s?([Cc]ache)?.*\.db
 exclude_regex = .*/\.?[Tt]humbnails
 
 # Generic tmp dir
-exclude_regex = .*/[Tt]e?mp
+exclude_regex = .*/[Tt]e?mp$
+exclude_regex = .*/[Tt]emporary$
 
 # Generic cache dir
-exclude_regex = .*/([Ff]ont|[Ff]ile|[Dd]ist|[Nn]ative|[Pp]lay|[Pp]lugin|[Aa]sset|[Aa]ctivities|[Ss]cript|[Gg]pu|[Cc]ode|[Ll]ocal|[Ss]ession|[Ww]eb|JS|CRL)? ?[Cc]ache
-exclude_regex = .*/[Cc]ache[Ss]torage
+exclude_regex = .*/([Ff]ont|[Ff]ile|[Dd]ist|[Nn]ative|[Pp]lay|[Pp]lugin|[Aa]sset|[Aa]ctivities|[Ss]cript|[Gg]pu|[Cc]ode|[Ll]ocal|[Ss]ession|[Ww]eb|JS|CRL)? ?[Cc]ache$
+exclude_regex = .*/[Cc]ache[Ss]torage$
 
 # Synology NAS working directory
 exclude_regex = .*/.SynologyWorkingDirectory

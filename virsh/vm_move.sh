@@ -4,13 +4,15 @@
 # Written by Orsiris de Jong
 # Usage
 # ./vm_move.sh vm_name destination_path [dryrun=true|false]
-
-
 SCRIPT_BUILD=2025032701
 
+# SCRIPT ARGUMENTS
 VM_NAME="${1:-false}"
 DST_DIR="${2:-false}"
 DRY_RUN="${3:-false}"
+
+
+
 LOG_FILE="/var/log/$(basename $0).log"
 
 
@@ -72,6 +74,11 @@ move_storage() {
         [ "${DRY_RUN}" == true ] || virsh define $vm_xml
         if [ $? != 0 ]; then
                 log "Failed to redefine $VM_NAME" "ERROR"
+        fi
+
+        if [ "${SCRIPT_GOOD}" == true ]; then
+                log "Renaming original file to ${src_disk_path}.old"
+                mv "${src_disk_path}" "${src_disk_path}.old" || log "Cannot rename old disk image" "ERROR"
         fi
 }
 

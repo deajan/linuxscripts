@@ -2,7 +2,7 @@
 
 # Machine create script 2025040401
 
-# TODO: Since libvirt 9.1.0, q35 vm include itco watchdog by default, se we should remove i6300esb by default
+# TODO: Since libvirt 9.1.0, q35 vm include itco watchdog by default, se we should remove i6300esb by default as per https://libvirt.org/formatdomain.html#watchdog-devices
 
 # OS (get with osinfo-query os)
 OS_VARIANT=rhel9.5

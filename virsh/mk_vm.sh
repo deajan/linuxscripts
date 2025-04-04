@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# Machine create script 2025032601
+# Machine create script 2025040401
+
+# TODO: Since libvirt 9.1.0, q35 vm include itco watchdog by default, se we should remove i6300esb by default
 
 # OS (get with osinfo-query os)
 OS_VARIANT=rhel9.5
@@ -29,6 +31,7 @@ DISKFULLPATH="${DISKPATH}/${VM}-disk0.qcow2"
 VCPUS=4
 RAM=4096
 
+W
 IO_MODE=,io="native"
 # For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
 # io=threads still reduces performances overall, so io=native,iothread=x is good

@@ -29,6 +29,17 @@ DISKFULLPATH="${DISKPATH}/${VM}-disk0.qcow2"
 VCPUS=4
 RAM=4096
 
+IO_MODE=,io="native"
+# For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
+# io=threads still reduces performances overall, so io=native,iothread=x is good
+#IO_MODE=,io="native,driver.iothread=1,driver.queues=${VCPUS} --iothreads 1"
+
+# Paramètres VM
+PRODUCT=vm_elconf
+VERSION=5.0
+MANUFACTURER=NetPerfect
+VENDOR=netperfect_vm
+
 #IP=
 #NETMASK=
 #GATEWAY=
@@ -61,14 +72,6 @@ BRIDGE="--network bridge=br_net0"
 
 INST="inst.text inst.lang=en_US inst.keymap=fr"
 KICKSTART=/root/ks.rhel9.cfg
-
-# Paramètres VM
-PRODUCT=vmtls
-
-IO_MODE=,io="native"
-# For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
-# io=threads still reduces performances overall, so io=native,iothread=x is good
-#IO_MODE=,io="native,driver.iothread=1,driver.queues=${VCPUS} --iothreads 1"
 
 ## Prepare commands
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
@@ -106,9 +109,9 @@ if [ $? != 0 ]; then
 fi
 
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
-        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor=netperfect_vm --sysinfo smbios,system.manufacturer=NetPerfect --sysinfo smbios,system.product='${PRODUCT}' '${BOOT_ARGS}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
+        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
 else
-        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor=netperfect_vm --sysinfo smbios,system.manufacturer=NetPerfect --sysinfo smbios,system.product='${PRODUCT}' '${BOOT_ARGS}' --extra-args "'${extra_args}'" '${KICKSTART_INJECT}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
+        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' --extra-args "'${extra_args}'" '${KICKSTART_INJECT}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
 fi
 echo $vm_cmd
 eval "$vm_cmd"

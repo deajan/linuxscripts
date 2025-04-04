@@ -66,8 +66,9 @@ KICKSTART=/root/ks.rhel9.cfg
 PRODUCT=vmtls
 
 IO_MODE=,io="native"
-# Pour les machines à IO intensifs, utiliser
-#IO_MODE=,io="native,driver.iothread=${VCPUS},driver.queues=${VCPUS} --iothreads ${VCPUS}"
+# For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
+# io=threads still reduces performances overall, so io=native,iothread=x is good
+#IO_MODE=,io="native,driver.iothread=1,driver.queues=${VCPUS} --iothreads 1"
 
 ## Prepare commands
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
@@ -94,9 +95,9 @@ fi
 [ ! -d "$DISKPATH" ] && mkdir "$DISKPATH" && chown qemu:qemu "$DISKPATH"
 
 # -o cluster_size=64k 64k is optimal for DB environment (and is default value), should match underlying storage cluster size (recordsize on zfs)
-# -o lazy_refcounts: less IO (we mark image as dirty and it will be counted later)
+# -o lazy_refcounts: less IO (we mark image as dirty and it will be counted later). DO NOT ENABLE THIS since it may corrupt images and require a repair after a power loss
 # -o refcount_bits= : 16 bits as default, 64 bits is default, the more the faster, but will need more memory cache to be configured
-disk_cmd="qemu-img create -f qcow2 -o extended_l2=on -o preallocation=metadata -o cluster_size=64k -o lazy_refcounts=on "${DISKFULLPATH}" ${DISKSIZE}"
+disk_cmd="qemu-img create -f qcow2 -o extended_l2=on -o preallocation=metadata -o cluster_size=64k "${DISKFULLPATH}" ${DISKSIZE}"
 echo $disk_cmd
 $disk_cmd
 if [ $? != 0 ]; then

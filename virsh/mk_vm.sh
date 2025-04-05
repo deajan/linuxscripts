@@ -3,7 +3,7 @@
 # Machine create script 2025040401
 
 # TODO: Since libvirt 9.1.0, q35 vm include itco watchdog by default, se we should remove i6300esb by default as per https://libvirt.org/formatdomain.html#watchdog-devices
-
+# TODO: add --boot uefi as option
 # OS (get with osinfo-query os)
 OS_VARIANT=rhel9.5
 ISO=/data/public_vm/ISO/AlmaLinux-9.5-x86_64-dvd.iso

@@ -31,11 +31,14 @@ DISKFULLPATH="${DISKPATH}/${VM}-disk0.qcow2"
 VCPUS=4
 RAM=4096
 
-W
+# IO MODE io_uring is fastest on io intesive VMs
+# IO MODE native with threads is fast
+# IO MODE native has good latency
 IO_MODE=,io="native"
 # For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
 # io=threads still reduces performances overall, so io=native,iothread=x is good
 #IO_MODE=,io="native,driver.iothread=1,driver.queues=${VCPUS} --iothreads 1"
+#IO_MODE=,io="io_uring,driver.queues=${VCPUS} --iothreads 4"
 
 # Paramètres VM
 PRODUCT=vm_elconf

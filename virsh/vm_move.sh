@@ -4,7 +4,7 @@
 # Written by Orsiris de Jong
 # Usage
 # ./vm_move.sh vm_name destination_path [dryrun=true|false]
-SCRIPT_BUILD=2025032701
+SCRIPT_BUILD=2025042101
 
 # SCRIPT ARGUMENTS
 VM_NAME="${1:-false}"
@@ -38,9 +38,13 @@ move_storage() {
         for disk in $(virsh domblklist "$VM_NAME" --details | grep "file" | grep "disk" | awk '{print $3"="$4}'); do
                 disk_name="$(echo "${disk}" | awk -F'=' '{print $1}')"
                 src_disk_path="$(echo "${disk}" | awk -F'=' '{print $2}')"
-                dst_disk_path="${DST_DIR}/$(basename "${src_disk_path}")"
+                if [ ! -f "${src_disk_path}" ]; then
+                        log "Source disk ${disk_name} not found in ${src_disk_path}" "ERROR"
+                        break
+                fi
+                dst_disk_path="$(realpath "${DST_DIR}")/$(basename "${src_disk_path}")"
                 log "Found disk ${disk_name} in ${src_disk_path}"
-                vm_xml="$(dirname "${disk_path}")/${VM_NAME}.inactive.xml"
+                vm_xml="$(dirname "${dst_disk_path}")/${VM_NAME}.inactive.$(date +"%Y%m%dT%H%M%S").xml"
                 if [ "${xml_written}" == false ]; then
                         log "Exporting ${VM_NAME} to ${vm_xml}"
                         virsh dumpxml --inactive "${VM_NAME}" > "${vm_xml}"
@@ -63,7 +67,8 @@ move_storage() {
                         log "Failed to blockopty $VM_NAME to $DST_DIR/$vm_disk" "ERROR"
                         break
                 fi
-                sed -i "#${src_disk_path}#${dst_disk_path}#g" "$vm_xml"
+                log "Modifying disk path from \"${src_disk_path}\" to \"${dst_disk_path}\""
+                sed -i "s#${src_disk_path}#${dst_disk_path}#g" "$vm_xml"
                 if [ $? != 0 ]; then
                         log "Failed to modify XML file $vm_vml" "ERROR"
                         break
@@ -77,19 +82,20 @@ move_storage() {
         fi
 
         if [ "${SCRIPT_GOOD}" == true ]; then
-                log "Renaming original file to ${src_disk_path}.old"
-                mv "${src_disk_path}" "${src_disk_path}.old" || log "Cannot rename old disk image" "ERROR"
+                log "Renaming original file to ${src_disk_path}.old.$(date +"%Y%m%dT%H%M%S")"
+                mv "${src_disk_path}" "${src_disk_path}.old.$(date +"%Y%m%dT%H%M%S")" || log "Cannot rename old disk image" "ERROR"
         fi
 }
 
 
-if [ "${VM_NAME}" == false ] || [ "${DST_DIR}" == false ]; then
-        log "vm_move script usage:"
-        log "$(basename "$0") VM_NAME DESTINATION DIR [DRYRUN: true|false]"
+[ "${DRY_RUN}" == true ] && log "Running in DRY mode. Nothing will actually be done" "NOTICE"
+
+if [ "${VM_NAME}" == "" ] || [ "${DST_DIR}" == "" ]; then
+        log "Please run $0 [vm_name] [dest_dir]"
         exit 1
 fi
 
-[ "${DRY_RUN}" == true ] && log "Running in DRY mode. Nothing will actually be done" "NOTICE"
+[ ! -d "${DST_DIR}" ] && mkdir "${DST_DIR}"
 
 move_storage "${VM_NAME}" "${DST_DIR}"
 

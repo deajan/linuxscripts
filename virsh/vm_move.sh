@@ -4,7 +4,7 @@
 # Written by Orsiris de Jong
 # Usage
 # ./vm_move.sh vm_name destination_path [dryrun=true|false]
-SCRIPT_BUILD=2025042401
+SCRIPT_BUILD=2025042402
 
 # SCRIPT ARGUMENTS
 VM_NAME="${1:-false}"
@@ -64,6 +64,12 @@ move_storage() {
                                 break
                         fi
                 fi
+
+                if [ "${src_disk_path}" == "${dst_disk_path}" ]; then
+                        log "Source and destination are identical. Won't do anything" "ERROR"
+                        continue
+                fi
+
                 log "Moving disk ${disk_name} to ${dst_disk_path}"
                 [ "${DRY_RUN}" == true ] || virsh blockcopy "${VM_NAME}" "${disk_name}" --dest="${dst_disk_path}" --wait --pivot --verbose
                 if [ $? != 0 ]; then
@@ -74,11 +80,16 @@ move_storage() {
                         # Check if disk image is not in use anymore
                         lsof "${src_disk_path}" > /dev/null 2>&1
                         if [ $? -eq 0 ]; then
-                                log "Disk ${src_disk_path} is still in use by $(lsof "${src_disk_path}")" "ERROR"
+                                if [ "${DRY_RUN}" == true ]; then
+                                        log "Disk ${src_disk_path} is in use by $(lsof "${src_disk_path}")"
+                                else
+                                        log "Disk ${src_disk_path} is still in use by $(lsof "${src_disk_path}")" "ERROR"
+                                fi
                         else
                                 disk_pivoted=true
                                 if [ "${DELETE_SOURCE}" == true ]; then
-                                log "Deleting source disk ${src_disk_path}"
+                                        log "Deleting source disk ${src_disk_path}"
+                                        rm "${src_disk_path}" || log "Cannot delete old disk image" "ERROR"
                                 else
                                         old_disk_path="${src_disk_path}.old.$(date +"%Y%m%dT%H%M%S")"
                                         log "Renaming original file to ${old_disk_path}"
@@ -119,8 +130,8 @@ move_storage() {
 
 [ "${DRY_RUN}" == true ] && log "Running in DRY mode. Nothing will actually be done" "NOTICE"
 
-if [ "${VM_NAME}" == "" ] || [ "${DST_DIR}" == "" ]; then
-        log "Please run $0 [vm_name] [dest_dir]"
+if [ "${VM_NAME}" == false ] || [ "${DST_DIR}" == false ]; then
+        log "Please run $0 vm_name dest_dir [dry_run] [delete_source]"
         exit 1
 fi
 

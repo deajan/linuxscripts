@@ -115,9 +115,9 @@ if [ $? != 0 ]; then
 fi
 
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
-        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
+        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host-model --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
 else
-        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' --extra-args "'${extra_args}'" '${KICKSTART_INJECT}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
+        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host-model --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' --extra-args "'${extra_args}'" '${KICKSTART_INJECT}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
 fi
 echo $vm_cmd
 eval "$vm_cmd"

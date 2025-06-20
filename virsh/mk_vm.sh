@@ -1,23 +1,28 @@
 #!/usr/bin/env bash
 
-# Machine create script 2025040401
+# Machine create script 2025062001
 
-# TODO: Since libvirt 9.1.0, q35 vm include itco watchdog by default, se we should remove i6300esb by default as per https://libvirt.org/formatdomain.html#watchdog-devices
-# TODO: add --boot uefi as option
+BOOT=hd
+
 # OS (get with osinfo-query os)
 OS_VARIANT=rhel9.5
 ISO=/data/public_vm/ISO/AlmaLinux-9.5-x86_64-dvd.iso
 ISO=/opt/AlmaLinux-9.5-x86_64-dvd.iso
 #OS_VARIANT=debian12
 #ISO=/data/public_vm/ISO/debian-12.9.0-amd64-DVD-1.iso
+
 #OS_VARIANT=win2k22
 #ISO=/data/public_vm/ISO/fr-fr_windows_server_2022_x64_dvd_9f7d1adb.iso
+#BOOT=uefi
 #OS_VARIANT=opensuse15.5
 #ISO=/data/public_vm/ISO/grommunio.x86_64-latest.install.iso
+
 #OS_VARIANT=debian12
 #ISO=/data/public_vm/ISO/proxmox-mail-gateway_8.1-1.iso
+
 #OS_VARIANT=freebsd14.0
 #ISO=/opt/OPNsense-25.1-dvd-amd64.iso
+#BOOT=hd
 
 # BOOT_TYPE = cdrom when no kernel can be directly loaded (used for appliances and windows)
 #BOOT_TYPE=cdrom
@@ -76,6 +81,11 @@ BRIDGE="--network bridge=br_net0"
 #PCI_PASSTHROUGH="--host-device pci_0000_03_00_0 --network none"
 #BRIDGE="--network bridge=br_dmzext"
 
+TPM="--tpm /dev/tpm"
+
+# 440fx machines as well as libvirt < 9.1.0 still need manual watchdog
+WATCHDOG="--watchdog i6300esb,action=reset"
+
 INST="inst.text inst.lang=en_US inst.keymap=fr"
 KICKSTART=/root/ks.rhel9.cfg
 
@@ -115,9 +125,9 @@ if [ $? != 0 ]; then
 fi
 
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
-        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host-model --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
+        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host-model --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0  --sound none --boot '${BOOT}' --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' '${VIDEO}' '${BRIDGE}' '${TPM}' --autoconsole text'
 else
-        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host-model --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0 --watchdog i6300esb,action=reset --sound none --boot hd --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' --extra-args "'${extra_args}'" '${KICKSTART_INJECT}' '${VIDEO}' '${BRIDGE}' --autoconsole text'
+        vm_cmd='virt-install --name '${VM}' --ram '${RAM}' --vcpus '${VCPUS}' --cpu host-model --os-variant '${OS_VARIANT}' --disk path='${DISKFULLPATH}',bus=virtio,cache=none'${IO_MODE}' --channel unix,mode=bind,target_type=virtio,name=org.qemu.guest_agent.0  --sound none --boot '${BOOT}' --autostart --sysinfo smbios,bios.vendor='${VENDOR}',system.manufacturer='${MANUFACTURER}',system.version='${VERSION}',system.product='${PRODUCT}' '${BOOT_ARGS}' --extra-args "'${extra_args}'" '${KICKSTART_INJECT}' '${VIDEO}' '${BRIDGE}' '${TPM}' --autoconsole text'
 fi
 echo $vm_cmd
 eval "$vm_cmd"

@@ -94,8 +94,8 @@ KICKSTART=/root/ks.rhel9.cfg
 
 ## Prepare commands
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
-        BOOT_ARGS="--cdrom ${ISO}"
-        extra_args="--disk device=cdrom,path=${VIRTIO_ISO},bus=sata"
+        BOOT_ARGS="--cdrom ${ISO} --disk device=cdrom,path=${VIRTIO_ISO},bus=sata"
+        extra_args=""
 else
         BOOT_ARGS="--location ${ISO}"
         extra_args="console=tty0 console=ttyS0,115200n8 ${INST} ${IP}"

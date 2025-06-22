@@ -12,8 +12,11 @@ ISO=/opt/AlmaLinux-9.5-x86_64-dvd.iso
 #ISO=/data/public_vm/ISO/debian-12.9.0-amd64-DVD-1.iso
 
 #OS_VARIANT=win2k22
+#OS_VARIANT=win11
 #ISO=/data/public_vm/ISO/fr-fr_windows_server_2022_x64_dvd_9f7d1adb.iso
 #BOOT=uefi
+#VIRTIO_ISO=/data/public_vm/ISO/virtio-win-0.1.271.iso
+
 #OS_VARIANT=opensuse15.5
 #ISO=/data/public_vm/ISO/grommunio.x86_64-latest.install.iso
 
@@ -81,7 +84,7 @@ BRIDGE="--network bridge=br_net0"
 #PCI_PASSTHROUGH="--host-device pci_0000_03_00_0 --network none"
 #BRIDGE="--network bridge=br_dmzext"
 
-TPM="--tpm /dev/tpm"
+TPM="--tpm emulator"
 
 # 440fx machines as well as libvirt < 9.1.0 still need manual watchdog
 WATCHDOG="--watchdog i6300esb,action=reset"
@@ -92,7 +95,7 @@ KICKSTART=/root/ks.rhel9.cfg
 ## Prepare commands
 if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
         BOOT_ARGS="--cdrom ${ISO}"
-        extra_args=""
+        extra_args="--disk device=cdrom,path=${VIRTIO_ISO},bus=sata"
 else
         BOOT_ARGS="--location ${ISO}"
         extra_args="console=tty0 console=ttyS0,115200n8 ${INST} ${IP}"

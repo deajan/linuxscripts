@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-# Machine create script 2025062001
+# Machine create script 2025070401
 
+# Use standard or UEFI bootx
 BOOT=hd
+# Boot a kernel or just load a standard cdrom bootfile
+BOOT_TYPE=kernel
 
 # OS (get with osinfo-query os)
-OS_VARIANT=rhel9.5
-ISO=/data/public_vm/ISO/AlmaLinux-9.5-x86_64-dvd.iso
-ISO=/opt/AlmaLinux-9.5-x86_64-dvd.iso
+OS_VARIANT=rhel10.0
+ISO=/public_vm3/iso/AlmaLinux-10.0-x86_64-dvd.iso
+#ISO=/opt/AlmaLinux-9.6-x86_64-dvd.iso
+
 #OS_VARIANT=debian12
 #ISO=/data/public_vm/ISO/debian-12.9.0-amd64-DVD-1.iso
 
@@ -15,10 +19,12 @@ ISO=/opt/AlmaLinux-9.5-x86_64-dvd.iso
 #OS_VARIANT=win11
 #ISO=/data/public_vm/ISO/fr-fr_windows_server_2022_x64_dvd_9f7d1adb.iso
 #BOOT=uefi
+#BOOT_TYPE=cdrom
 #VIRTIO_ISO=/data/public_vm/ISO/virtio-win-0.1.271.iso
 
 #OS_VARIANT=opensuse15.5
 #ISO=/data/public_vm/ISO/grommunio.x86_64-latest.install.iso
+#BOOT_TYPE=cdrom
 
 #OS_VARIANT=debian12
 #ISO=/data/public_vm/ISO/proxmox-mail-gateway_8.1-1.iso
@@ -27,17 +33,16 @@ ISO=/opt/AlmaLinux-9.5-x86_64-dvd.iso
 #ISO=/opt/OPNsense-25.1-dvd-amd64.iso
 #BOOT=hd
 
-# BOOT_TYPE = cdrom when no kernel can be directly loaded (used for appliances and windows)
-#BOOT_TYPE=cdrom
 
-TENANT=npf
-VM=___vmname___.${TENANT}.local
-DISKSIZE=100G
-DISKPATH=/data/public/${TENANT}
+TENANT=tenant
+VM=haproxy01p.${TENANT}.local
+DISKSIZE=30G
+DISKPATH=/public_vm3/${TENANT}
 #DISKPATH=/var/lib/libvirt/images
 DISKFULLPATH="${DISKPATH}/${VM}-disk0.qcow2"
-VCPUS=4
-RAM=4096
+VCPUS=1
+RAM=2048
+BRIDGE_MTU=1330
 
 # IO MODE io_uring is fastest on io intesive VMs
 # IO MODE native with threads is fast
@@ -61,8 +66,8 @@ VENDOR=netperfect_vm
 
 NPF_TARGET=generic
 #NPF_USER_NAME=user
-#NPF_USER_PASSWORD=
-#NPF_ROOT_PASSWORD=
+#NPF_USER_PASSWORD=password
+#NPF_ROOT_PASSWORD=rootpassword
 
 # Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or '.', cannot start or end with '-'
 NPF_HOSTNAME="${VM}"
@@ -74,31 +79,36 @@ if [ "${IP}" != "" ] && [ "${NETMASK}" != "" ]; then
        #IP="ip=192.168.151.11::192.168.151.254:255.255.255.0:${VM}:none nameserver=192.168.151.254"
 fi
 
-#VIDEO="--graphics none"
-VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
+VIDEO="--graphics none"
+#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
 
 #BRIDGE="--network bridge=br_dmzint"
-#BRIDGE="--network bridge=br_${TENANT}"
+BRIDGE="--network bridge=br_${TENANT},mtu.size=${BRIDGE_MTU}"
 #BRIDGE="--network bridge=br_cloudstack"
-BRIDGE="--network bridge=br_net0"
+#BRIDGE="--network bridge=br_net0"
 #PCI_PASSTHROUGH="--host-device pci_0000_03_00_0 --network none"
 #BRIDGE="--network bridge=br_dmzext"
 
-TPM="--tpm emulator"
+
+#TPM="--tpm emulator"
 
 # 440fx machines as well as libvirt < 9.1.0 still need manual watchdog
-WATCHDOG="--watchdog i6300esb,action=reset"
+#WATCHDOG="--watchdog i6300esb,action=reset"
 
 INST="inst.text inst.lang=en_US inst.keymap=fr"
 KICKSTART=/root/ks.rhel9.cfg
 
 ## Prepare commands
-if [ ${OS_VARIANT:0:3} == "win" ] || [ "$BOOT_TYPE" == "cdrom" ]; then
-        BOOT_ARGS="--cdrom ${ISO} --disk device=cdrom,path=${VIRTIO_ISO},bus=sata"
-        extra_args=""
+if [ "$BOOT_TYPE" == "cdrom" ]; then
+        BOOT_ARGS="--cdrom ${ISO}"
 else
         BOOT_ARGS="--location ${ISO}"
         extra_args="console=tty0 console=ttyS0,115200n8 ${INST} ${IP}"
+fi
+
+# Add virtio
+if [ ${OS_VARIANT:0:3} == "win" ]; then
+        BOOT_ARGS="${BOOT_ARGS} --disk device=cdrom,path=${VIRTIO_ISO},bus=sata"
 fi
 
 if [ "${KICKSTART}" != "" ]; then

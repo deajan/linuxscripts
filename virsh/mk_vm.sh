@@ -2,33 +2,50 @@
 
 # Machine create script 2025070401
 
-# Use standard or UEFI bootx
+# Use standard or UEFI boot
 BOOT=hd
 # Boot a kernel or just load a standard cdrom bootfile
 BOOT_TYPE=kernel
 
 # OS (get with osinfo-query os)
+
+# Example for RHEL 10
 OS_VARIANT=rhel10.0
 ISO=/public_vm3/iso/AlmaLinux-10.0-x86_64-dvd.iso
-#ISO=/opt/AlmaLinux-9.6-x86_64-dvd.iso
+KICKSTART=/root/ks.el9-10.cfg
 
+# RHEL 9
+#OS_VARIANT=rhel9.6
+#ISO=/opt/AlmaLinux-9.6-x86_64-dvd.iso
+#KICKSTART=/root/ks.el9-10.cfg
+
+# Debian 12
 #OS_VARIANT=debian12
 #ISO=/data/public_vm/ISO/debian-12.9.0-amd64-DVD-1.iso
 
+# Windows Server 2022
 #OS_VARIANT=win2k22
 #OS_VARIANT=win11
 #ISO=/data/public_vm/ISO/fr-fr_windows_server_2022_x64_dvd_9f7d1adb.iso
 #BOOT=uefi
 #BOOT_TYPE=cdrom
 #VIRTIO_ISO=/data/public_vm/ISO/virtio-win-0.1.271.iso
+#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
+#TPM="--tpm emulator"
 
+# Grommunio based on OpenSUSE 15.6 (needs graphical interface for console menu)
 #OS_VARIANT=opensuse15.5
 #ISO=/data/public_vm/ISO/grommunio.x86_64-latest.install.iso
 #BOOT_TYPE=cdrom
+#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
 
+# Proxmox
 #OS_VARIANT=debian12
 #ISO=/data/public_vm/ISO/proxmox-mail-gateway_8.1-1.iso
+#BOOT_TYPE=cdrom
+#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
 
+# OPNSense
 #OS_VARIANT=freebsd14.0
 #ISO=/opt/OPNsense-25.1-dvd-amd64.iso
 #BOOT=hd
@@ -42,6 +59,8 @@ DISKPATH=/public_vm3/${TENANT}
 DISKFULLPATH="${DISKPATH}/${VM}-disk0.qcow2"
 VCPUS=1
 RAM=2048
+BRIDGE_NAME=br_${TENANT}
+#BRIDGE_NAME=
 BRIDGE_MTU=1330
 
 # IO MODE io_uring is fastest on io intesive VMs
@@ -59,10 +78,10 @@ VERSION=5.0
 MANUFACTURER=NetPerfect
 VENDOR=netperfect_vm
 
-#IP=
-#NETMASK=
-#GATEWAY=
-#NAMESERVER=
+#IP=192.168.21.1
+#NETMASK=255.255.255.0
+#GATEWAY=192.168.21.254
+#NAMESERVER=192.168.21.254
 
 NPF_TARGET=generic
 #NPF_USER_NAME=user
@@ -79,34 +98,31 @@ if [ "${IP}" != "" ] && [ "${NETMASK}" != "" ]; then
        #IP="ip=192.168.151.11::192.168.151.254:255.255.255.0:${VM}:none nameserver=192.168.151.254"
 fi
 
-VIDEO="--graphics none"
-#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
+# If no specific video is asked, consider we're using VNC
+if [ -z "${VIDEO}" ]; then
+        VIDEO="--graphics none"
+fi
 
-#BRIDGE="--network bridge=br_dmzint"
-BRIDGE="--network bridge=br_${TENANT},mtu.size=${BRIDGE_MTU}"
-#BRIDGE="--network bridge=br_cloudstack"
-#BRIDGE="--network bridge=br_net0"
+BRIDGE="--network bridge=${BRIDGE_NAME},mtu.size=${BRIDGE_MTU}"
 #PCI_PASSTHROUGH="--host-device pci_0000_03_00_0 --network none"
-#BRIDGE="--network bridge=br_dmzext"
-
-
-#TPM="--tpm emulator"
 
 # 440fx machines as well as libvirt < 9.1.0 still need manual watchdog
 #WATCHDOG="--watchdog i6300esb,action=reset"
 
 INST="inst.text inst.lang=en_US inst.keymap=fr"
-KICKSTART=/root/ks.rhel9.cfg
 
 ## Prepare commands
 if [ "$BOOT_TYPE" == "cdrom" ]; then
         BOOT_ARGS="--cdrom ${ISO}"
+        if [ ${OS_VARIANT:0:3} != "win" ]; then
+                extra_args="console=tty0 console=ttyS0,115200n8"
+        fi
 else
         BOOT_ARGS="--location ${ISO}"
         extra_args="console=tty0 console=ttyS0,115200n8 ${INST} ${IP}"
 fi
 
-# Add virtio
+# Add virtio ISO for windows
 if [ ${OS_VARIANT:0:3} == "win" ]; then
         BOOT_ARGS="${BOOT_ARGS} --disk device=cdrom,path=${VIRTIO_ISO},bus=sata"
 fi

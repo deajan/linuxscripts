@@ -2,21 +2,18 @@
 
 # Quick and dirty KVM VM local storage move script
 # Written by Orsiris de Jong
-# Usage
-# ./vm_move.sh vm_name destination_path [dryrun=true|false]
-SCRIPT_BUILD=2025042402
 
-# SCRIPT ARGUMENTS
-VM_NAME="${1:-false}"
-DST_DIR="${2:-false}"
-DRY_RUN="${3:-false}"
-DELETE_SOURCE="${4:-false}"
+SCRIPT_BUILD=2025082301
+
 
 
 LOG_FILE="/var/log/$(basename $0).log"
 
 
 SCRIPT_GOOD=true
+
+# Make sure virsh output is consistent
+export LANG=C
 
 log() {
     __log_line="${1}"
@@ -58,7 +55,7 @@ move_storage() {
                                 xml_ok=true
                         fi
                         log "Undefining $vm_name"
-                        [ "${DRY_RUN}" == true ] || virsh undefine "${VM_NAME}"
+                        [ "${DRY_RUN}" == true ] || virsh undefine "${VM_NAME}" --keep-nvram
                         if [ $? != 0 ]; then
                                 log "Undefining $VM_NAME failed" "ERROR"
                                 break
@@ -70,8 +67,13 @@ move_storage() {
                         continue
                 fi
 
-                log "Moving disk ${disk_name} to ${dst_disk_path}"
-                [ "${DRY_RUN}" == true ] || virsh blockcopy "${VM_NAME}" "${disk_name}" --dest="${dst_disk_path}" --wait --pivot --verbose
+                if [ "${VM_IS_OFFLINE}" == true ]; then
+                        log "Cold moving disk ${disk_name} to ${dst_disk_path}"
+                        [ "${DRY_RUN}" == true ] || cp --preserve "${src_disk_path}" "${dst_disk_path}"
+                else
+                        log "Hot moving disk ${disk_name} to ${dst_disk_path}"
+                        [ "${DRY_RUN}" == true ] || virsh blockcopy "${VM_NAME}" "${disk_name}" --dest="${dst_disk_path}" --wait --pivot --verbose
+                fi
                 if [ $? != 0 ]; then
                         log "Failed to blockcopy $VM_NAME to $DST_DIR/$vm_disk" "ERROR"
                         disk_pivoted=false
@@ -116,16 +118,76 @@ move_storage() {
         done
 
         if [ "${xml_ok}" == true ]; then
-                log "Defining VM ${VM_NAME} from ${vm_xml}"
-                [ "${DRY_RUN}" == true ] || virsh define "$vm_xml"
-                if [ $? != 0 ]; then
-                       log "Failed to redefine ${VM_NAME}" "ERROR"
+                if [ "${DRY_RUN}" == true ]; then
+                        log "Would define VM ${VM_NAME} from ${vm_xml}"
+                else
+                        log "Redefining VM ${VM_NAME} from ${vm_xml}"
+                        virsh define "$vm_xml"
+                        if [ $? != 0 ]; then
+                               log "Failed to redefine ${VM_NAME}" "ERROR"
+                        fi
                 fi
         else
                 log "XML file is not okay, cannot redefine ${VM_NAME} from ${vm_xml}" "ERROR"
                 log "VM ${VM_NAME} is in transient state. Please repair." "ERROR"
         fi
 }
+
+# SCRIPT ARGUMENTS
+VM_NAME=false
+DST_DIR=false
+DRY_RUN=false
+DELETE_SOURCE=false
+
+function Usage {
+        echo "$0"
+        echo ""
+        echo "$0 --vm=VM_NAME --dest=/path/to/destination_dir [--delete] [--dry]"
+        echo ""
+        echo "--delete          Delete source file on succesful copy"
+        echo "--dry             Don't actually move anything"
+        exit 128
+}
+
+function GetCommandlineArguments {
+        local isFirstArgument=true
+
+        if [ $# -eq 0 ]
+        then
+                Usage
+        fi
+
+        for i in "${@}"; do
+                case "$i" in
+                        --dry)
+                        DRY_RUN=true
+                        ;;
+                        --delete)
+                        DELETE_SOURCE=true
+                        ;;
+                        --help|-h|--version|-v)
+                        Usage
+                        ;;
+                        --vm=*)
+                        VM_NAME="${i##*=}"
+                        ;;
+                        --dest=*)
+                        DST_DIR="${i##*=}"
+                        ;;
+                        *)
+                        if [ $isFirstArgument == false ]; then
+                                log "Unknown option '$i'" "CRITICAL"
+                                Usage
+                        fi
+                        ;;
+                esac
+                isFirstArgument=false
+        done
+}
+
+GetCommandlineArguments "${@}"
+
+
 
 
 [ "${DRY_RUN}" == true ] && log "Running in DRY mode. Nothing will actually be done" "NOTICE"
@@ -137,22 +199,27 @@ fi
 
 DST_DIR="$(realpath "${DST_DIR}")"
 
-[ ! -d "${DST_DIR}" ] && mkdir "${DST_DIR}"
+[ ! -d "${DST_DIR}" ] && mkdir "${DST_DIR}" && chown qemu:qemu "${DST_DIR}"
 if [ ! -w "${DST_DIR}" ]; then
         log "Destination dir ${DST_DIR} is not writable" "ERROR"
         exit 1
 fi
 
-if ! virsh list --name | grep "^${VM_NAME}$" > /dev/null 2>&1; then
+if ! virsh list --name --all | grep "^${VM_NAME}$" > /dev/null 2>&1; then
         log "VM ${VM_NAME} not found via virsh list" "ERROR"
         exit 1
+fi
+
+VM_IS_OFFLINE=false
+if [ "$(virsh domstate ${VM_NAME})" == "shut off" ]; then
+        VM_IS_OFFLINE=true
 fi
 
 move_storage "${VM_NAME}" "${DST_DIR}"
 
 
 log "List of transient domains"
-virsh list --transient
+virsh list --transient | grep "${VM_NAME}"
 virsh list --transient >> "$LOG_FILE" 2>&1
 
 log "End of line"

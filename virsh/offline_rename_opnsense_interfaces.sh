@@ -103,12 +103,17 @@ CleanUp() {
         ${ZPOOL_BINARY} status
         ${ZPOOL_BINARY} status >> "${LOG_FILE}" 2>&1
 
-        log "Disconnecting NBD device ${DEV}"
-        #${QEMU_NBD_BINARY} --disconnect "${DEV}" 2>> "${LOG_FILE}" || log "Cannot disconnect ${DEV}" "ERROR"
-        if [ "${VM_RUNNING}" == true ]; then
-                log "Restarting vm ${OPNSENSE_VM} since it was running"
-                ${VIRSH_BINARY} start "${OPNSENSE_VM}" 2>> "${LOG_FILE}" || log "Cannot start ${OPNSENSE_VM}" "ERROR"
+        if cmp -n 512 /dev/nbd0 /dev/zero 2>&1 | grep EOF > /dev/null 2>&1; then
+                log "NBD device ${DEV} already disconnected"
+        else
+                log "Disconnecting NBD device ${DEV}"
+                ${QEMU_NBD_BINARY} --disconnect "${DEV}" 2>> "${LOG_FILE}" || log "Cannot disconnect ${DEV}" "ERROR"
+                if [ "${VM_RUNNING}" == true ]; then
+                        log "Restarting vm ${OPNSENSE_VM} since it was running"
+                        ${VIRSH_BINARY} start "${OPNSENSE_VM}" 2>> "${LOG_FILE}" || log "Cannot start ${OPNSENSE_VM}" "ERROR"
+                fi
         fi
+
         log "End of CleanUp"
 }
 

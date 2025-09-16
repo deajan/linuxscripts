@@ -8,6 +8,7 @@ BOOT=hd
 BOOT_TYPE=kernel
 
 # OS (get with osinfo-query os)
+# Machine variant (get with /usr/libexec/qemu-kvm -machine help)
 
 # Example for RHEL 10
 OS_VARIANT=rhel10.0

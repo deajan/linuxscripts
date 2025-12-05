@@ -114,7 +114,7 @@ function checkDomains {
 					outlook.fr outlook.fr outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.com outlook.fr outlook.com
 					gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com gmail.com
 					googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com googlemail.com
-					aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.frr aliceadsl aliceadsl.fr aliceadsl.fr
+					aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr aliceadsl.fr
 					voila.fr voila.fr voila.fr voila.fr voila.fr voila.fr
 					skynet.be skynet.be skynet.be
 					aol.fr aol.com aol.com aol.com aol.com aol.com aol.com aol.com aol.com
@@ -159,7 +159,7 @@ function checkEnvironment {
 	fi
 
 	if ! type tr > /dev/null; then
-		echo "This script needs tr to transorm addresses to lowercase."
+		echo "This script needs tr to transform addresses to lowercase."
 		exit 1
 	fi
 
@@ -240,7 +240,7 @@ function sortAmbiguous {
 	local output_valid="${3}"
 
 	# Test for username and domain
-	if [ $CSV_EMAIL_IS_FIRST_COLUMN == false ]; then
+	if [ "${CSV_EMAIL_IS_FIRST_COLUMN}" = false ]; then
 		BEGIN=$CSV_INPUT_DELIMITER
 	else
 		BEGIN='^'
@@ -261,8 +261,8 @@ if ([ "$1" == "" ] || [ ! -f "$1" ]) ; then
 fi
 
 input="$1"
-input_path="$(dirname $1)"
-input_file="$(basename $1)"
+input_path="$(dirname "$1")"
+input_file="$(basename "$1")"
 output_tmp="$input_path/$TMP_PREFIX.$input_file"
 output_valid="$input_path/$VALID_PREFIX.$input_file"
 output_missing_mx="$input_path/$MISSING_MX_PREFIX.$input_file"

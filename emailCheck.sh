@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 PROGRAM="emailCheck.sh"
-AUTHOR="(L) 2014-2019 by Orsiris de Jong"
+AUTHOR="(L) 2014-2025 by Orsiris de Jong"
 CONTACT="http://www.netpower.fr/ - ozy@netpower.fr"
-PROGRAM_VERSION=0.6.4
-PROGRAM_BUILD=2019032801
+PROGRAM_VERSION=0.7.0
+PROGRAM_BUILD=2025120501
 
 ## Email correction script
+## Checks if there are any known domain typos
 ## Lowers all characters of email
 ## Checks if email format is valid againts RFC822
-## Checks if there are any known domain typos
 ## Checks if email domain has valid MX records
 ## Checks if email address is ambiguous
 
@@ -18,7 +18,9 @@ PROGRAM_BUILD=2019032801
 
 ###################################################################################################### Input file format options
 
-## Example: File with only one mail address per line
+INPUT_FILE_HAS_HEADER=true
+
+## Example: File with only one column per line being an email address
 #CSV_EMAIL_IS_FIRST_COLUMN=true
 #CSV_INPUT_DELIMITER=$IFS
 #CSV_READ='email'
@@ -31,7 +33,7 @@ PROGRAM_BUILD=2019032801
 #CSV_WRITE='$col1,$email,$col3'
 
 CSV_EMAIL_IS_FIRST_COLUMN=true
-CSV_INPUT_DELIMITER=$IFS
+CSV_INPUT_DELIMITER=$IFS # could be ";" o ","
 CSV_READ='email'
 CSV_WRITE='$email'
 
@@ -64,7 +66,7 @@ VALID_MAILS=0
 function lowercase {
 	local string="${1}"
 
-	echo "$(echo $string | tr '[:upper:]' '[:lower:]')"
+	echo "$(echo "$string" | tr '[:upper:]' '[:lower:]')"
 }
 
 # Function checks if argument is valid against RFC822
@@ -151,6 +153,17 @@ function checkMXDomains {
 	fi
 }
 
+function checkAmbiguous {
+	local mail="${1}"
+
+	echo "$mail" | grep -E "test@|example@|exemple@|spam@|noreply@|no-reply@|@test\.|@example\.|@exemple\.|@spam\." > /dev/null
+	if [ $? -eq 0 ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 function checkEnvironment {
 
 	if ! type dig > /dev/null; then
@@ -165,7 +178,7 @@ function checkEnvironment {
 
 	echo "Checking for internet access."
 	if [[ $(uname) == *"CYGWIN"* ]]; then
-		ping $inet_addr_to_test 64 3 > /dev/null
+		ping -n 3 $inet_addr_to_test > /dev/null
 	else
 		ping -c 3 $inet_addr_to_test > /dev/null
 	fi
@@ -192,41 +205,81 @@ function usage {
 	exit 1
 }
 
+function write_line {
+	local state="${1}"
+	local line="${2}"
+	local curated_file="${3}"
+	eval "echo \"${state}${CSV_INPUT_DELIMITER}${line}\" >> \"$curated_file\""
+}
+
 function loop {
 	local input="${1}"
-	local output_rfc_non_compliant="${2}"
-	local output_missing_mx="${3}"
-	local output_tmp="${4}"
+	local curated_file="${2}"
 
 	echo "Checking emails."
 
 	count=0
+	MISSING_MAILS=0
+	INCORRECT_MAILS=0
+	INCORRECT_DOMAINS=0
+	INCORRECT_MX=0
+	AMBIGUOUS_MAILS=0
+	VALID_MAILS=0
+	
+	eval "echo \"${STATE}${CSV_INPUT_DELIMITER}${CSV_READ// /$CSV_INPUT_DELIMITER}\" > \"$curated_file\""
 	while IFS=$CSV_INPUT_DELIMITER read $CSV_READ; do
-
-		email=$(lowercase "$email")
-		checkRFC822 "$email"
-		if [ $? -eq 1 ]; then
-			INCORRECT_MAILS=$((INCORRECT_MAILS+1))
-			echo "$email" >> "$output_rfc_non_compliant"
+		if [ $count -eq 0 ] && [ "$INPUT_FILE_HAS_HEADER" = true ] ; then
+			count=$((count+1))
+			continue
+		fi
+		
+		STATE=""
+		
+		if [ "${email}" == "" ]; then
+			write_line "MISSING" "$CSV_WRITE" "$curated_file"
+			MISSING_MAILS=$((MISSING_MAILS+1))
 			continue
 		fi
 
+		email=$(lowercase "$email")
 		newemail=$(checkDomains "$email")
-
 		## Ugly hack because incorrect_domains can't be increased directly in function checkDomains
 		if [ "$newemail" != "$email" ]; then
 			INCORRECT_DOMAINS=$((INCORRECT_DOMAINS+1))
 			email="$newemail"
+			STATE="FIXED_DOMAIN"
+		fi
+
+		checkRFC822 "$email"
+		if [ $? -eq 1 ]; then
+			INCORRECT_MAILS=$((INCORRECT_MAILS+1))
+			write_line "NON_RFC_COMPLIANT" "$CSV_WRITE" "$curated_file"
+			count=$((count+1))
+			continue
 		fi
 
 		checkMXDomains "$email"
 		if [ $? -eq 1 ]; then
 			INCORRECT_MX=$((INCORRECT_MX+1))
-			echo "$email" >> "$output_missing_mx"
+			write_line "MISSING_MX" "$CSV_WRITE" "$curated_file"
+			count=$((count+1))
 			continue
 		fi
+		
+		checkAmbiguous "$email"
+		if [ $? -eq 0 ]; then
+			AMBIGUOUS_MAILS=$((AMBIGUOUS_MAILS+1))
+			write_line "AMBIGUOUS" "$CSV_WRITE" "$curated_file"
+			count=$((count+1))
+			continue
+		fi
+		
+		VALID_MAILS=$((VALID_MAILS+1))
+		if [ "${STATE}" == "" ] ; then
+			STATE="VALID"
+		fi
+		write_line "$STATE" "$CSV_WRITE" "$curated_file"
 
-		eval "echo \"$CSV_WRITE\" >> \"$output_tmp\""
 		count=$((count+1))
 		if [ $((count % 1000)) -eq 0 ]; then
 			echo "Time: $SECONDS - $count email addresses processed so far."
@@ -234,68 +287,32 @@ function loop {
 	done <"$input"
 }
 
-function sortAmbiguous {
-	local input="${1}"
-	local output_ambiguous="${2}"
-	local output_valid="${3}"
-
-	# Test for username and domain
-	if [ "${CSV_EMAIL_IS_FIRST_COLUMN}" = false ]; then
-		BEGIN=$CSV_INPUT_DELIMITER
-	else
-		BEGIN='^'
-	fi
-
-	cmd="$BEGIN""test@|""$BEGIN""example@|""$BEGIN""exemple@|""$BEGIN""spam@|""$BEGIN""noreply@|""$BEGIN""no-reply@|@test\.|@example\.|@exemple\.|@spam\."
-	eval 'egrep $cmd < "$input" > "$output_ambiguous"'
-	eval 'egrep -v $cmd < "$input" > "$output_valid"'
-
-	AMBIGUOUS_MAILS=$(wc -l < "$output_ambiguous")
-	VALID_MAILS=$(wc -l < "$output_valid")
-}
-
-checkEnvironment
-
-if ([ "$1" == "" ] || [ ! -f "$1" ]) ; then
+if [ "$1" = "" ]; then
 	usage
 fi
+if [ ! -f "$1" ] ; then
+	echo "No such file: $1"
+	exit 1
+fi
+
+
+checkEnvironment
 
 input="$1"
 input_path="$(dirname "$1")"
 input_file="$(basename "$1")"
-output_tmp="$input_path/$TMP_PREFIX.$input_file"
-output_valid="$input_path/$VALID_PREFIX.$input_file"
-output_missing_mx="$input_path/$MISSING_MX_PREFIX.$input_file"
-output_non_rfc_compliant="$input_path/$NON_RFC_COMPLIANT_PREFIX.$input_file"
-output_ambiguous="$input_path/$AMBIGUOUS_PREFIX.$input_file"
+curated_file="$input_path/curated-$input_file"
 
-if [ -f "$output_tmp" ]; then
-	rm -f "$output_tmp"
-fi
-if [ -f "$output_valid" ]; then
-	rm -f "$output_valid"
-fi
-if [ -f "$output_missing_mx" ]; then
-	rm -f "$output_missing_mx"
-fi
-if [ -f "$output_non_rfc_compliant" ]; then
-	rm -f "$output_non_rfc_compliant"
-fi
-if [ -f "$output_ambiguous" ]; then
-	rm -f "$output_ambiguous"
-fi
-
-loop "$input" "$output_non_rfc_compliant" "$output_missing_mx" "$output_tmp"
-if [ ! -f "$output_tmp" ]; then
+loop "$input" "$curated_file"
+if [ ! -f "$curated_file" ]; then
 	echo "No valid emails found. Check if your file has only email addresses, or configure the read process accordingly to read a multicolumn CSV file in source header."
 	echo "Also, if your file comes from Windows, convert it using dos2unix first."
-else
-	sortAmbiguous "$output_tmp" "$output_ambiguous" "$output_valid"
 fi
 
 echo ""
-echo "$INCORRECT_MAILS non rfc822 compliant emails are in [$output_non_rfc_compliant]."
+echo "$MISSING_MAILS missing emails found."
+echo "$INCORRECT_MAILS non rfc822 compliant emails found."
 echo "$INCORRECT_DOMAINS emails had incorrect domains and have been corrected."
-echo "$INCORRECT_MX emails are missing mx records in their domain in [$output_missing_mx]."
-echo "$AMBIGUOUS_MAILS are ambiguous emails in [$output_ambiguous]."
-echo "$VALID_MAILS emails seem valid in [$output_valid]."
+echo "$INCORRECT_MX emails are missing mx records in their domain."
+echo "$AMBIGUOUS_MAILS are ambiguous emails."
+echo "$VALID_MAILS emails seem valid."

@@ -4,9 +4,8 @@
 # Basically, when restored to another KVM hypervisor, we must update interface names if network card driver names change
 # The key here is the sed line which updates known interface names with new ones
 # This has been tested on a lagg interface with two members
-# Written by NetInvent SAS in 2025
 
-SCRIPT_BUILD=2025091601
+SCRIPT_BUILD=2025122301
 
 OPNSENSE_VM="opnsense01p.domain.local"
 VM_XML="/opt/cube/opnsense01p.domain.local.xml"
@@ -113,7 +112,6 @@ CleanUp() {
                         ${VIRSH_BINARY} start "${OPNSENSE_VM}" 2>> "${LOG_FILE}" || log "Cannot start ${OPNSENSE_VM}" "ERROR"
                 fi
         fi
-
         log "End of CleanUp"
 }
 
@@ -149,8 +147,8 @@ DestroyVirshSnaphots() {
 ExportVMxml() {
         vm="${1}"
 
-        log "Exporting current VM xml file"
-        virsh dumpxml --security-info "$vm" > "${VM_XML}" || log "Failed to dump XML for $vm in ${VM_XML}" "ERROR"
+        log "Exporting current VM ${vm} xml file"
+        virsh dumpxml --security-info "$vm" > "${VM_XML}" || log_quit "Failed to dump XML for $vm in ${VM_XML}" "ERROR"
 }
 
 log "Starting EL Goat script at $(date)"
@@ -158,7 +156,7 @@ log "Starting EL Goat script at $(date)"
 
 # Shutdown current opnsense VM if running
 if [ "$(${VIRSH_BINARY} domstate "${OPNSENSE_VM}")" == "running" ]; then
-        log "Machine ${OPNSENSE_VM} running. We need to shut it down for modifications"
+        log "Machine ${OPNSENSE_VM} running. Shut it down for modifications"
         ${VIRSH_BINARY} shutdown "${OPNSENSE_VM}" 2>> "${LOG_FILE}" || log "Cannot shutdown ${OPNSENSE_VM}" "ERROR"
         timer=0
         while [ "$(${VIRSH_BINARY} domstate "${OPNSENSE_VM}")" == "running" ]; do
@@ -168,8 +166,9 @@ if [ "$(${VIRSH_BINARY} domstate "${OPNSENSE_VM}")" == "running" ]; then
                 if [ "${timer}" -gt ${VM_SHUTDOWN_TIMEOUT} ]; then
                         log "Forcing stop of ${OPNSENSE_VM} after ${timer} seconds"
                         ${VIRSH_BINARY} destroy "${OPNSENSE_VM}" 2>> "${LOG_FILE}" || log_quit "Cannot destroy ${OPNSENSE_VM}" "ERROR"
-                else
-                        log "Machine ${OPNSENSE_VM} stopped after ${timer} seconds"
+                fi
+                if [ $((timer % 30)) -eq 0 ]; then
+                        log "Machine ${OPNSENSE_VM} still running after ${timer} seconds, waiting for shutdown"
                 fi
         done
 else
@@ -235,6 +234,7 @@ for interface in "${INTERFACES_TO_REPLACE[@]}"; do
         index=$((index+1))
 done
 
+# Optional steps, change some config in the current VM
 log "Changing machine type"
 # Optional changes to machine (here, we update from Almalinux 9 to AlmaLinux 10 compat)
 sed -i "s#<type arch='x86_64' machine='pc-i440fx-rhel7.6.0'>hvm</type>#<type arch='x86_64' machine='pc-i440fx-rhel10.0.0'>hvm</type>#g" "${VM_XML}" 2>> "${LOG_FILE}" || log_quit "Cannot update VM type in ${VM_XML}" "ERROR"
@@ -243,7 +243,7 @@ sed -i "s#<type arch='x86_64' machine='pc-i440fx-rhel7.6.0'>hvm</type>#<type arc
 DestroyVirshSnaphots "${OPNSENSE_VM}"
 ExportVMxml "${OPNSENSE_VM}"
 
-if virsh list --all --name | grep "${OPNSENSE_VM}" > /dev/null 2>&1; then
+if ! virsh list --all --name | grep "${OPNSENSE_VM}" > /dev/null 2>&1; then
         log "Machine ${OPNSENSE_VM} is not defined"
 else
         log "Undefining ${OPNSENSE_VM}"

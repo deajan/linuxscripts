@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
-# Machine create script 2025070401
+# Machine create script 2026010701
 
-# Use standard or UEFI boot
+# Use standard (hd) or UEFI (uefi) boot
 BOOT=hd
-# Boot a kernel or just load a standard cdrom bootfile
+# Boot a kernel (kernel) or just boot standard using eltorito from iso (cdrom)
 BOOT_TYPE=kernel
 
 # OS (get with osinfo-query os)
-# Machine variant (get with /usr/libexec/qemu-kvm -machine help)
 
 # Example for RHEL 10
 OS_VARIANT=rhel10.0
@@ -22,7 +21,16 @@ KICKSTART=/root/ks.el9-10.cfg
 
 # Debian 12
 #OS_VARIANT=debian12
-#ISO=/data/public_vm/ISO/debian-12.9.0-amd64-DVD-1.iso
+#ISO=/public_vm3/iso/debian-12.11.0-amd64-DVD-1.iso
+#ISO=/private_vm/iso/debian-amd64-netinst-3cx.iso
+#BOOT_TYPE=cdrom
+#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
+
+# Debian 13
+#OS_VARIANT=debian13
+#ISO=/public_vm3/iso/debian-13.0.0-amd64-netinst.iso
+#BOOT_TYPE=cdrom
+#VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
 
 # Windows Server 2022
 #OS_VARIANT=win2k22
@@ -42,7 +50,7 @@ KICKSTART=/root/ks.el9-10.cfg
 
 # Proxmox
 #OS_VARIANT=debian12
-#ISO=/data/public_vm/ISO/proxmox-mail-gateway_8.1-1.iso
+#ISO=/public_vm/ISO/proxmox-mail-gateway_8.1-1.iso
 #BOOT_TYPE=cdrom
 #VIDEO="--video virtio --graphics vnc,listen=127.0.0.1,keymap=fr"
 
@@ -54,15 +62,15 @@ KICKSTART=/root/ks.el9-10.cfg
 
 TENANT=tenant
 VM=haproxy01p.${TENANT}.local
-DISKSIZE=30G
-DISKPATH=/public_vm3/${TENANT}
+DISKSIZE=40G
+DISKPATH=/private_vm/vm/${TENANT}
 #DISKPATH=/var/lib/libvirt/images
 DISKFULLPATH="${DISKPATH}/${VM}-disk0.qcow2"
-VCPUS=1
-RAM=2048
+VCPUS=2
+RAM=3072
 BRIDGE_NAME=br_${TENANT}
-#BRIDGE_NAME=
-BRIDGE_MTU=1330
+#BRIDGE_NAME=br_dmzint
+#BRIDGE_MTU=1330
 
 # IO MODE io_uring is fastest on io intesive VMs
 # IO MODE native with threads is fast
@@ -79,15 +87,25 @@ VERSION=5.0
 MANUFACTURER=NetPerfect
 VENDOR=netperfect_vm
 
-#IP=192.168.21.1
-#NETMASK=255.255.255.0
-#GATEWAY=192.168.21.254
-#NAMESERVER=192.168.21.254
+IP=192.168.21.1
+NETMASK=255.255.255.0
+GATEWAY=192.168.21.254
+NAMESERVER=192.168.21.254
 
-NPF_TARGET=generic
-#NPF_USER_NAME=user
-#NPF_USER_PASSWORD=password
-#NPF_ROOT_PASSWORD=rootpassword
+# Optional params for el_script (contained in kickstart)
+NPF_SCAP_PROFILE=anssi_bp28_high
+#NPF_SCAP_PROFILE=false
+NPF_BRAND_NAME=NetPERFECT
+NPF_VIRT_BRAND_NAME=NETPERFECT
+NPF_FIREWALL_WHITELIST_IP_LIST="10.13.37.0/24:192.168.151.4/32"
+NPF_FAIL2BAN_IGNORE_IP_LIST="${NPF_FIREWALL_WHITELIST_IP_LIST}"
+
+# Optional params for kickstart script
+NPF_TARGET=user
+NPF_USER_NAME=npfmonitor
+NPF_USER_PASSWORD=password
+NPF_ROOT_PASSWORD=rootpassword
+
 
 # Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or '.', cannot start or end with '-'
 NPF_HOSTNAME="${VM}"
@@ -134,11 +152,16 @@ if [ "${KICKSTART}" != "" ]; then
 fi
 
 [ -n "${NPF_TARGET}" ] && extra_args="${extra_args} NPF_TARGET=${NPF_TARGET}"
+[ -n "${NPF_SCAP_PROFILE}" ] && extra_args="${extra_args} NPF_TARGET=${NPF_SCAP_PROFILE}"
 [ -n "${NPF_USER_NAME}" ] && extra_args="${extra_args} NPF_USER_NAME=${NPF_USER_NAME}"
 [ -n "${NPF_USER_PASSWORD}" ] && extra_args="${extra_args} NPF_USER_PASSWORD=${NPF_USER_PASSW0RD}"
 [ -n "${NPF_ROOT_PASSWORD}" ] && extra_args="${extra_args} NPF_ROOT_PASSWORD=${NPF_ROOT_PASSWORD}"
 [ -n "${NPF_HOSTNAME}" ] && extra_args="${extra_args} NPF_HOSTNAME=${NPF_HOSTNAME}"
 [ -n "${NPF_NETWORK}" ] && extra_args="${extra_args} NPF_NETWORK=${NPF_NETWORK}"
+[ -n "${NPF_BRAND_NAME}" ] && extra_args="${extra_args} NPF_VIRT_BRAND_NAME=${NPF_BRAND_NAME}"
+[ -n "${NPF_VIRT_BRAND_NAME}" ] && extra_args="${extra_args} NPF_VIRT_BRAND_NAME=${NPF_VIRT_BRAND_NAME}"
+[ -n "${NPF_FIREWALL_WHITELIST_IP_LIST}" ] && extra_args="${extra_args} NPF_FIREWALL_WHITELIST_IP_LIST=${NPF_FIREWALL_WHITELIST_IP_LIST}"
+[ -n "${NPF_FAIL2BAN_IGNORE_IP_LIST}" ] && extra_args="${extra_args} NPF_FAIL2BAN_IGNORE_IP_LIST=${NPF_FAIL2BAN_IGNORE_IP_LIST}"
 
 ## Create tenant dir if not exit
 [ ! -d "$DISKPATH" ] && mkdir "$DISKPATH" && chown qemu:qemu "$DISKPATH"

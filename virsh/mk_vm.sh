@@ -154,7 +154,7 @@ fi
 [ -n "${NPF_TARGET}" ] && extra_args="${extra_args} NPF_TARGET=${NPF_TARGET}"
 [ -n "${NPF_SCAP_PROFILE}" ] && extra_args="${extra_args} NPF_TARGET=${NPF_SCAP_PROFILE}"
 [ -n "${NPF_USER_NAME}" ] && extra_args="${extra_args} NPF_USER_NAME=${NPF_USER_NAME}"
-[ -n "${NPF_USER_PASSWORD}" ] && extra_args="${extra_args} NPF_USER_PASSWORD=${NPF_USER_PASSW0RD}"
+[ -n "${NPF_USER_PASSWORD}" ] && extra_args="${extra_args} NPF_USER_PASSWORD=${NPF_USER_PASSWORD}"
 [ -n "${NPF_ROOT_PASSWORD}" ] && extra_args="${extra_args} NPF_ROOT_PASSWORD=${NPF_ROOT_PASSWORD}"
 [ -n "${NPF_HOSTNAME}" ] && extra_args="${extra_args} NPF_HOSTNAME=${NPF_HOSTNAME}"
 [ -n "${NPF_NETWORK}" ] && extra_args="${extra_args} NPF_NETWORK=${NPF_NETWORK}"

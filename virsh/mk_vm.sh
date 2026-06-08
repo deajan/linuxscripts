@@ -74,8 +74,8 @@ BRIDGE_NAME=br_${TENANT}
 
 # IO MODE io_uring is fastest on io intesive VMs
 # IO MODE threads is fast
-# IO MODE native has good latency, but may fail with qemu-kvm segfault with cache=none when qcow2 snapshot files exist and vm has high IO pressure 
-IO_MODE=,io="native"
+# IO MODE native has good latency, but may fail with qemu-kvm segfault with cache=none when qcow2 snapshot files exist and vm has high IO pressure on opensuse 
+IO_MODE=,io="threads"
 # For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
 # io=threads still reduces performances overall, so io=native,iothread=x is good
 #IO_MODE=,io="native,driver.iothread=1,driver.queues=${VCPUS} --iothreads 1"

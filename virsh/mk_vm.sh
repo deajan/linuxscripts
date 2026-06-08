@@ -10,7 +10,7 @@ BOOT_TYPE=kernel
 # OS (get with osinfo-query os)
 
 # Example for RHEL 10
-OS_VARIANT=rhel10.0
+OS_VARIANT=rhel10.2
 ISO=/public_vm3/iso/AlmaLinux-10.0-x86_64-dvd.iso
 KICKSTART=/root/ks.el9-10.cfg
 
@@ -73,8 +73,8 @@ BRIDGE_NAME=br_${TENANT}
 #BRIDGE_MTU=1330
 
 # IO MODE io_uring is fastest on io intesive VMs
-# IO MODE native with threads is fast
-# IO MODE native has good latency
+# IO MODE threads is fast
+# IO MODE native has good latency, but may fail with qemu-kvm segfault with cache=none when qcow2 snapshot files exist and vm has high IO pressure 
 IO_MODE=,io="native"
 # For IO intensive machines, the followng will improve latency at the cost of slighty lower IOPS
 # io=threads still reduces performances overall, so io=native,iothread=x is good

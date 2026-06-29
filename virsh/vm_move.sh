@@ -44,12 +44,12 @@ move_storage() {
                 fi
                 dst_disk_path="${DST_DIR}/$(basename "${src_disk_path}")"
                 log "Found disk ${disk_name} in ${src_disk_path}"
-                
+
                 if [ "${src_disk_path}" == "${dst_disk_path}" ]; then
                         log "Source and destination are identical. Won't do anything" "ERROR"
                         continue
                 fi
-                
+
                 if [ "${xml_dumped}" == false ]; then
                         log "Exporting ${VM_NAME} to ${vm_xml}"
                         virsh dumpxml --inactive "${VM_NAME}" > "${vm_xml}"
@@ -63,7 +63,7 @@ move_storage() {
                         if [ "${DRY_RUN}" == true ]; then
                             log "Would undefine $vm_name"
                         else
-                            log "Undefining $vm_name"                    
+                            log "Undefining $vm_name"
                             virsh undefine "${VM_NAME}" --keep-nvram
                             if [ $? != 0 ]; then
                                     log "Undefining $VM_NAME failed" "ERROR"
@@ -122,6 +122,7 @@ move_storage() {
                 fi
                 if [ "${DRY_RUN}" == true ]; then
                     log "Would modify XML disk path in ${vm_xml} from \"${src_disk_path}\" to \"${dst_disk_path}\""
+                else
                     log "Modifying disk path from \"${src_disk_path}\" to \"${dst_disk_path}\""
                     sed -i "s#${src_disk_path}#${dst_disk_path}#g" "${vm_xml}"
                     if [ $? != 0 ]; then

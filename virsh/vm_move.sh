@@ -3,7 +3,7 @@
 # Quick and dirty KVM VM local storage move script
 # Written by Orsiris de Jong
 
-SCRIPT_BUILD=2025082301
+SCRIPT_BUILD=2026062901
 
 
 
@@ -44,6 +44,12 @@ move_storage() {
                 fi
                 dst_disk_path="${DST_DIR}/$(basename "${src_disk_path}")"
                 log "Found disk ${disk_name} in ${src_disk_path}"
+                
+                if [ "${src_disk_path}" == "${dst_disk_path}" ]; then
+                        log "Source and destination are identical. Won't do anything" "ERROR"
+                        continue
+                fi
+                
                 if [ "${xml_dumped}" == false ]; then
                         log "Exporting ${VM_NAME} to ${vm_xml}"
                         virsh dumpxml --inactive "${VM_NAME}" > "${vm_xml}"
@@ -54,25 +60,32 @@ move_storage() {
                                 xml_dumped=true
                                 xml_ok=true
                         fi
-                        log "Undefining $vm_name"
-                        [ "${DRY_RUN}" == true ] || virsh undefine "${VM_NAME}" --keep-nvram
-                        if [ $? != 0 ]; then
-                                log "Undefining $VM_NAME failed" "ERROR"
-                                break
+                        if [ "${DRY_RUN}" == true ]; then
+                            log "Would undefine $vm_name"
+                        else
+                            log "Undefining $vm_name"                    
+                            virsh undefine "${VM_NAME}" --keep-nvram
+                            if [ $? != 0 ]; then
+                                    log "Undefining $VM_NAME failed" "ERROR"
+                                    break
+                            fi
                         fi
                 fi
 
-                if [ "${src_disk_path}" == "${dst_disk_path}" ]; then
-                        log "Source and destination are identical. Won't do anything" "ERROR"
-                        continue
-                fi
-
                 if [ "${VM_IS_OFFLINE}" == true ]; then
-                        log "Cold moving disk ${disk_name} to ${dst_disk_path}"
-                        [ "${DRY_RUN}" == true ] || cp --preserve "${src_disk_path}" "${dst_disk_path}"
+                        if [ "${DRY_RUN}" == true ]; then
+                            log "Would cold move disk ${disk_name} to \"${dst_disk_path}\""
+                        else
+                            log "Cold moving disk ${disk_name} to \"${dst_disk_path}\""
+                            cp --preserve "${src_disk_path}" "${dst_disk_path}"
+                        fi
                 else
-                        log "Hot moving disk ${disk_name} to ${dst_disk_path}"
-                        [ "${DRY_RUN}" == true ] || virsh blockcopy "${VM_NAME}" "${disk_name}" --dest="${dst_disk_path}" --wait --pivot --verbose
+                        if [ "${DRY_RUN}" == true ]; then
+                            log "Would hot move disk ${disk_name} to \"${dst_disk_path}\""
+                        else
+                            log "Hot moving disk ${disk_name} to \"${dst_disk_path}\""
+                            virsh blockcopy "${VM_NAME}" "${disk_name}" --dest="${dst_disk_path}" --wait --pivot --verbose
+                        fi
                 fi
                 if [ $? != 0 ]; then
                         log "Failed to blockcopy $VM_NAME to $DST_DIR/$vm_disk" "ERROR"
@@ -90,31 +103,41 @@ move_storage() {
                         else
                                 disk_pivoted=true
                                 if [ "${DELETE_SOURCE}" == true ]; then
-                                        log "Deleting source disk ${src_disk_path}"
-                                        rm "${src_disk_path}" || log "Cannot delete old disk image" "ERROR"
+                                        if [ "${DRY_RUN}" == true ]; then
+                                            log "Would delete source disk ${src_disk_path}"
+                                        else
+                                            log "Deleting source disk ${src_disk_path}"
+                                            rm "${src_disk_path}" || log "Cannot delete old disk image" "ERROR"
+                                        fi
                                 else
                                         old_disk_path="${src_disk_path}.old.$(date +"%Y%m%dT%H%M%S")"
-                                        log "Renaming original file to ${old_disk_path}"
-                                        mv "${src_disk_path}" "${old_disk_path}" || log "Cannot rename old disk image" "ERROR"
+                                        if [ "${DRY_RUN}" == true ]; then
+                                            log "Would rename original file to ${old_disk_path}"
+                                        else
+                                            log "Renaming original file to ${old_disk_path}"
+                                            mv "${src_disk_path}" "${old_disk_path}" || log "Cannot rename old disk image" "ERROR"
+                                        fi
                                 fi
                         fi
                 fi
-                log "Modifying disk path from \"${src_disk_path}\" to \"${dst_disk_path}\""
-                sed -i "s#${src_disk_path}#${dst_disk_path}#g" "${vm_xml}"
-                if [ $? != 0 ]; then
-                        log "Failed to modify XML file $vm_vml" "ERROR"
-                        if [ "${disk_pivoted}" == false ]; then
-                                log "Stopping operation since disks did not pivot yet"
-                                 break
-                        else
-                                log "Continuing operations, but xml file is bad" "ERROR"
-                                xml_ok=false
-                        fi
-                fi
-                if ! grep "${dst_disk_path}" "$vm_xml" > /dev/null 2>&1; then
-                        log "XML file check did not succeed" "ERROR"
-                        xml_ok=false
-                fi
+                if [ "${DRY_RUN}" == true ]; then
+                    log "Would modify XML disk path in ${vm_xml} from \"${src_disk_path}\" to \"${dst_disk_path}\""
+                    log "Modifying disk path from \"${src_disk_path}\" to \"${dst_disk_path}\""
+                    sed -i "s#${src_disk_path}#${dst_disk_path}#g" "${vm_xml}"
+                    if [ $? != 0 ]; then
+                            log "Failed to modify XML file $vm_vml" "ERROR"
+                            if [ "${disk_pivoted}" == false ]; then
+                                    log "Stopping operation since disks did not pivot yet"
+                                     break
+                            else
+                                    log "Continuing operations, but xml file is bad" "ERROR"
+                                    xml_ok=false
+                            fi
+                    fi
+                    if ! grep "${dst_disk_path}" "$vm_xml" > /dev/null 2>&1; then
+                            log "XML file check did not succeed" "ERROR"
+                            xml_ok=false
+                    fi
         done
 
         if [ "${xml_ok}" == true ]; then
